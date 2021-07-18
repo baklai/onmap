@@ -1,0 +1,14 @@
+body,
+html {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+body {
+  overflow: hidden !important;
+  overflow-y: auto !important;
+}
+
+*:focus {
+  outline: none !important;
+}

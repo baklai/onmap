@@ -1,0 +1,13 @@
+// Globals
+$body-font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+$material-light: (
+  background: #ffffff
+);
+
+$material-dark: (
+  background: #252526,
+  cards: #252526
+);
+
+@import '~vuetify/src/styles/styles.sass';
