@@ -1,5 +1,4 @@
-# onmap
-ONMAP («Online Network Mapper»)
+# ONMAP («Online Network Mapper»)
 
 Web application for network exploration and security auditing
 
