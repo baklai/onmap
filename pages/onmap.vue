@@ -454,8 +454,8 @@ export default {
   middleware: ['auth'],
 
   async asyncData({ $axios }) {
-    const { data: reports } = await $axios.get('nmap/reports', {});
-    const { data: profiles } = await $axios.get('nmap/profiles', {});
+    const { data: reports } = await $axios.get('reports', {});
+    const { data: profiles } = await $axios.get('profiles', {});
     return { reports, profiles };
   },
 
@@ -580,7 +580,7 @@ export default {
 
     async getReports() {
       try {
-        const { data: reports } = await this.$axios.get('nmap/reports', {});
+        const { data: reports } = await this.$axios.get('reports', {});
         this.reports = reports;
         this.$toast.success(`The list of reports has been updated!`);
       } catch (err) {
@@ -590,7 +590,7 @@ export default {
 
     async getReportById(id) {
       try {
-        const { data: report } = await this.$axios.get(`nmap/reports/${id}`);
+        const { data: report } = await this.$axios.get(`reports/${id}`);
         this.report = report;
 
         this.$toast.success(
@@ -603,7 +603,7 @@ export default {
 
     async deleteReport(id) {
       try {
-        await this.$axios.delete(`nmap/reports/${id}`);
+        await this.$axios.delete(`reports/${id}`);
         this.$toast.success('Report delete!');
         await this.getReports();
         this.report = null;
