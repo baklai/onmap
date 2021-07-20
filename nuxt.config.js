@@ -14,10 +14,20 @@ process.env.HOST =
 
 process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
 
+console.log(process.env);
+
 export default {
   telemetry: false,
 
   ssr: false,
+
+  cli: {
+    badgeMessages: [
+      `Application: ${process.env.npm_package_name} ${process.env.npm_package_version}
+    Description: ${process.env.npm_package_description}
+    Author: ${process.env.npm_package_author_name}`
+    ]
+  },
 
   server: {
     host: process.env.HOST,

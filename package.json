@@ -1,6 +1,7 @@
 {
   "name": "onmap",
   "description": "Online Network Mapper",
+  "author": {"name": "Dmitrii Baklai"},
   "version": "1.0.0",
   "private": true,
   "scripts": {
