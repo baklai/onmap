@@ -37,18 +37,15 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.statics.setDefaultUser = async function (
-  DEFAULT_ADMIN,
-  BCRYPT_SALT
-) {
+userSchema.statics.setDefaultAdmin = async function (user, BCRYPT_SALT) {
   const count = await this.countDocuments({});
   if (!count) {
     const salt = bcrypt.genSaltSync(BCRYPT_SALT);
     await this.create({
-      login: DEFAULT_ADMIN,
-      password: bcrypt.hashSync(DEFAULT_ADMIN, salt),
-      name: DEFAULT_ADMIN,
-      email: `${DEFAULT_ADMIN}@${DEFAULT_ADMIN}.localhost`,
+      login: user.login,
+      password: bcrypt.hashSync(user.password, salt),
+      name: user.name,
+      email: user.email,
       isActive: true,
       isAdmin: true,
       role: 'admin'

@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
+const { BCRYPT_SALT } = require('../config/api.config');
+
 mongoose.plugin(require('../plugins/mongoose'));
 
 const Profile = require('../models/profile.model');
+const User = require('../models/user.model');
 
 const connectToMongoDB = async (MONGO_URI) => {
   try {
@@ -12,6 +15,18 @@ const connectToMongoDB = async (MONGO_URI) => {
       useFindAndModify: false,
       useCreateIndex: true
     });
+    await User.setDefaultAdmin(
+      {
+        login: 'root',
+        password: 'root',
+        name: 'root',
+        email: 'root@onmap.localhost',
+        isActive: true,
+        isAdmin: true,
+        role: 'admin'
+      },
+      BCRYPT_SALT
+    );
     await Profile.setDefaultProfiles();
     console.log('MongoDB connected');
   } catch (err) {
