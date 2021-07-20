@@ -76,6 +76,4 @@ profileSchema.statics.setDefaultProfiles = async function () {
 
 const Profile = model('profile', profileSchema);
 
-Profile.setDefaultProfiles();
-
 module.exports = Profile;
