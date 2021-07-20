@@ -52,8 +52,6 @@ const signup = async (req, res, next) => {
     if (candidate) {
       res.status(409).json({ message: 'This login is already taken.' });
     } else {
-      console.log(BCRYPT_SALT);
-
       const salt = bcrypt.genSaltSync(BCRYPT_SALT);
       const user = new User({
         login,
