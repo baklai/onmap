@@ -14,8 +14,6 @@ process.env.HOST =
 
 process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
 
-console.log(process.env);
-
 export default {
   telemetry: false,
 
@@ -23,9 +21,9 @@ export default {
 
   cli: {
     badgeMessages: [
-      `Application: ${process.env.npm_package_name} ${process.env.npm_package_version}
-    Description: ${process.env.npm_package_description}
-    Author: ${process.env.npm_package_author_name}`
+      `Application: ${process.env.npm_package_name.toUpperCase()} v${
+        process.env.npm_package_version
+      }`
     ]
   },
 

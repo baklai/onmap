@@ -1,14 +1,30 @@
 {
   "name": "onmap",
-  "description": "Online Network Mapper",
-  "author": {"name": "Dmitrii Baklai"},
   "version": "1.0.0",
-  "private": true,
+  "description": "Online Network Mapper",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baklai/onmap.git"
+  },
+  "keywords": [
+    "Node.js",
+    "NMAP",
+    "REST",
+    "API",
+    "Express",
+    "JWT"
+  ],
+  "author": "Dmitrii Baklai <d.n.baklai@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/baklai/onmap/issues"
+  },
+  "homepage": "https://github.com/baklai/onmap#readme",
   "dependencies": {
     "@nuxt/content": "^1.14.0",
     "@nuxtjs/auth-next": "^5.0.0-1621716493.b9b36c6",
