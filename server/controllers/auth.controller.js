@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { toResponse } = require('../models/user.model');
+const userService = require('../services/user.service');
 
 const {
   JWT_SECRET_KEY,
@@ -8,19 +9,17 @@ const {
   BCRYPT_SALT
 } = require('../config/api.config');
 
-const User = require('../models/user.model');
-
 const signin = async (req, res, next) => {
   try {
     const { login, password } = req.body;
-    const user = await User.findOne({ login });
+    const user = await userService.findOneByLogin(login);
     if (user) {
       if (user.isActive) {
-        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (isPasswordCorrect) {
           const token = jwt.sign(
             {
-              userId: user._id,
+              id: user._id,
               login: user.login,
               name: user.name,
               email: user.email,
@@ -30,12 +29,12 @@ const signin = async (req, res, next) => {
             JWT_SECRET_KEY,
             { expiresIn: TOKEN_EXPIRES_IN }
           );
-          res.json({ token });
+          res.status(200).json({ token });
         } else {
-          res.status(401).json({ message: 'The password is incorrect.' });
+          res.status(403).json({ message: 'The password is incorrect.' });
         }
       } else {
-        res.status(401).json({ message: 'Account is disabled.' });
+        res.status(403).json({ message: 'Account is disabled.' });
       }
     } else {
       res.status(404).json({ message: 'User is not found.' });
@@ -47,19 +46,14 @@ const signin = async (req, res, next) => {
 
 const signup = async (req, res, next) => {
   try {
-    const { login, password, name, email } = req.body;
-    const candidate = await User.findOne({ login });
+    const { login } = req.body;
+    const candidate = await userService.findOneByLogin(login);
     if (candidate) {
       res.status(409).json({ message: 'This login is already taken.' });
     } else {
-      const salt = bcrypt.genSaltSync(BCRYPT_SALT);
-      const user = new User({
-        login,
-        password: bcrypt.hashSync(password, salt),
-        name,
-        email
-      });
-      await user.save();
+      const salt = await bcrypt.genSalt(BCRYPT_SALT);
+      const password = await bcrypt.hash(req.body.password, salt);
+      const user = await userService.createOne({ ...req.body, password });
       res.status(201).json(toResponse(user));
     }
   } catch (err) {

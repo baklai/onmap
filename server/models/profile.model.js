@@ -63,6 +63,11 @@ const profileSchema = new Schema({
   flags: {
     type: Array,
     default: []
+  },
+  userID: {
+    type: Schema.Types.ObjectId,
+    default: null,
+    ref: 'user'
   }
 });
 

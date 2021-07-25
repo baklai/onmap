@@ -1,6 +1,6 @@
 module.exports = (schema, options) => {
-  schema.set('versionKey', false);
   schema.set('autoCreate', false);
+  schema.set('versionKey', false);
   schema.set('timestamps', true);
 
   schema.virtual('id').get(function () {

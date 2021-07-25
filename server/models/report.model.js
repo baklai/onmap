@@ -39,6 +39,11 @@ const reportSchema = new Schema({
   },
   report: {
     type: Object
+  },
+  userID: {
+    type: Schema.Types.ObjectId,
+    default: null,
+    ref: 'user'
   }
 });
 
