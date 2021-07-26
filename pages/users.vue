@@ -198,7 +198,7 @@ export default {
   middleware: ['auth'],
 
   async asyncData({ $axios }) {
-    const { data: users } = await $axios.get('user', {});
+    const { data: users } = await $axios.get('users', {});
 
     console.log(users);
 
@@ -211,7 +211,7 @@ export default {
 
   methods: {
     async getUsers() {
-      const { data: users } = await this.$axios.get('user', {});
+      const { data: users } = await this.$axios.get('users', {});
 
       console.log(users);
 
