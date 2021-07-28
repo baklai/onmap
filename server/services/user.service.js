@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Profile = require('../models/profile.model');
 
 const findOneByLogin = async (login) => {
   return User.findOne({ login });
@@ -13,7 +14,9 @@ const findOne = async (id) => {
 };
 
 const createOne = async (user) => {
-  return User.create(user);
+  const newUser = await User.create(user);
+  await Profile.setDefaultProfiles(newUser.id);
+  return newUser;
 };
 
 const updateOne = async (user) => {

@@ -56,7 +56,6 @@ const PROFILES = [
 const profileSchema = new Schema({
   title: {
     type: String,
-    unique: true,
     required: true,
     trim: true
   },
@@ -71,11 +70,11 @@ const profileSchema = new Schema({
   }
 });
 
-profileSchema.statics.setDefaultProfiles = async function () {
-  const count = await this.countDocuments({});
-  if (!count) {
-    await this.insertMany(PROFILES);
-  }
+profileSchema.statics.setDefaultProfiles = async function (userID) {
+  const defaultProfiles = PROFILES.map((item) => {
+    return { ...item, userID };
+  });
+  await this.insertMany(defaultProfiles);
   return;
 };
 
