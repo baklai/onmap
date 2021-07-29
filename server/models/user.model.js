@@ -41,7 +41,7 @@ userSchema.statics.setDefaultAdmin = async function (user, BCRYPT_SALT) {
   const count = await this.countDocuments({});
   if (!count) {
     const salt = bcrypt.genSaltSync(BCRYPT_SALT);
-    await this.create({
+    const userAdmin = await this.create({
       login: user.login,
       password: bcrypt.hashSync(user.password, salt),
       name: user.name,
@@ -50,6 +50,7 @@ userSchema.statics.setDefaultAdmin = async function (user, BCRYPT_SALT) {
       isAdmin: true,
       role: 'admin'
     });
+    return userAdmin;
   }
   return;
 };
@@ -60,6 +61,4 @@ userSchema.statics.toResponse = function (user) {
   return { id, login, name, email, isActive, isAdmin, role, created, updated };
 };
 
-const User = model('user', userSchema);
-
-module.exports = User;
+module.exports = model('user', userSchema);

@@ -5,6 +5,7 @@ const { BCRYPT_SALT } = require('../config/api.config');
 mongoose.plugin(require('../plugins/mongoose'));
 
 const User = require('../models/user.model');
+const Profile = require('../models/profile.model');
 
 const connectToMongoDB = async (MONGO_URI) => {
   try {
@@ -14,7 +15,21 @@ const connectToMongoDB = async (MONGO_URI) => {
       useFindAndModify: false,
       useCreateIndex: true
     });
-    await User.setDefaultAdmin(
+    console.log('MongoDB connected');
+
+    // Development only - delete all collections by start
+    if (process.env.NODE_ENV === 'development') {
+      console.log('MongoDB - delete all collections');
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections().toArray();
+      collections
+        .map((collection) => collection.name)
+        .forEach(async (collectionName) => {
+          db.dropCollection(collectionName);
+        });
+    }
+
+    const user = await User.setDefaultAdmin(
       {
         login: 'root',
         password: 'root',
@@ -26,7 +41,9 @@ const connectToMongoDB = async (MONGO_URI) => {
       },
       BCRYPT_SALT
     );
-    console.log('MongoDB connected');
+    if (user) {
+      await Profile.setDefaultProfiles(user.id);
+    }
   } catch (err) {
     console.error('Failed to connect to MongoDB', err);
     process.exit(0);
