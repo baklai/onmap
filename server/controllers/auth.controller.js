@@ -23,6 +23,7 @@ const signin = async (req, res, next) => {
               login: user.login,
               name: user.name,
               email: user.email,
+              isActive: user.isActive,
               isAdmin: user.isAdmin,
               role: user.role
             },

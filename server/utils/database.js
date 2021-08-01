@@ -25,7 +25,7 @@ const connectToMongoDB = async (MONGO_URI) => {
       collections
         .map((collection) => collection.name)
         .forEach(async (collectionName) => {
-          db.dropCollection(collectionName);
+          await db.dropCollection(collectionName);
         });
     }
 
