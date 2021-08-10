@@ -1,7 +1,8 @@
 const Profile = require('../models/profile.model');
 
-const findAll = async () => {
-  return await Profile.find({});
+const findAll = async (id) => {
+  console.log(id);
+  return await Profile.find({ userID: id });
 };
 const findOne = async (id) => {
   return Profile.findById(id);

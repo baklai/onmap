@@ -35,9 +35,9 @@ app.use(
 );
 
 app.use('/auth', authRoutes);
-app.use('/users', isActive, userRoutes);
-app.use('/profiles', isActive, profileRoutes);
-app.use('/reports', isActive, reportRoutes);
+app.use('/users', userRoutes);
+app.use('/profiles', profileRoutes);
+app.use('/reports', reportRoutes);
 
 app.use((req, res, next) => {
   res

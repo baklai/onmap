@@ -2,7 +2,9 @@ const profileService = require('../services/profile.service');
 
 const findAll = async (req, res, next) => {
   try {
-    const profiles = await profileService.findAll();
+    const userID = req.user.id;
+    const profiles = await profileService.findAll(userID);
+    console.log(profiles);
     res.status(200).json(profiles);
   } catch (err) {
     next(err);
