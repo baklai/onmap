@@ -1,13 +1,23 @@
+@import '~vuetify/src/styles/styles.sass';
+
 // Globals
-$body-font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$body-font-family: 'Segoe UI', 'segoeUI', Frutiger, 'Frutiger Linotype',
+  'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
 
 $material-light: (
-  background: #ffffff
+  app-bar: #ffffff,
+  background: #ffffff,
+  navigation-drawer: #ffffff,
+  bottom-navigation: #ffffff,
+  cards: #ffffff,
+  toolbar: #ffffff
 );
 
 $material-dark: (
-  background: #252526,
-  cards: #252526
+  app-bar: #1a202c,
+  background: #1a202c,
+  navigation-drawer: #1a202c,
+  bottom-navigation: #1a202c,
+  cards: #1a202c,
+  toolbar: #1a202c
 );
-
-@import '~vuetify/src/styles/styles.sass';

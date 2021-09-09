@@ -12,3 +12,15 @@ body {
 *:focus {
   outline: none !important;
 }
+
+/* body {
+  font-family: 'Segoe UI', 'segoeUI', Frutiger, 'Frutiger Linotype',
+    'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif !important;
+  color: #454545 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  height: 100% !important;
+  -webkit-text-size-adjust: 100% !important;
+} */
