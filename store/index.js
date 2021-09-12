@@ -1,29 +1,31 @@
+import { author, config } from '~/package.json';
+
 export const state = () => ({
   name: 'WEBNMAP',
   version: process.env.npm_package_version || '',
   description: 'Web utility for network discovery and security auditing',
   author: 'Dmitrii Baklai',
 
-  socialLinks: [
-    {
+  author: author,
+  copyright: `Copyright \u00A9 ${new Date().getFullYear()} ${author.name}`,
+
+  social: {
+    facebook: {
       title: 'Facebook',
-      description: '',
       icon: 'mdi-facebook',
-      href: 'https://www.facebook.com'
+      href: config.social.facebook
     },
-    {
-      title: 'Twitter',
-      description: '',
-      icon: 'mdi-twitter',
-      href: 'https://twitter.com'
-    },
-    {
+    github: {
       title: 'Github',
-      description: '',
       icon: 'mdi-github',
-      href: 'https://github.com'
+      href: config.social.github
+    },
+    linkedin: {
+      title: 'Linkedin',
+      icon: 'mdi-linkedin',
+      href: config.social.linkedin
     }
-  ]
+  }
 });
 
 export const getters = {

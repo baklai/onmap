@@ -1,6 +1,5 @@
 <template>
   <v-row justify="center" class="ma-5">
-    <AppSidebar />
     <v-col cols="3">
       <v-sheet rounded="lg">
         <v-list>

@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <AppSidebar />
     <v-row>
       <v-col cols="6">
         <v-card max-width="600" class="mx-auto">

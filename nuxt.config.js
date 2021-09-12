@@ -2,6 +2,8 @@ import colors from 'vuetify/es5/util/colors';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import { name, version, description, author, config } from './package.json';
+
 dotenv.config({
   path:
     process.env.NODE_ENV === 'production'
@@ -37,15 +39,16 @@ export default {
   },
 
   head: {
-    titleTemplate: 'ONMAP • %s',
-    title: 'Online Network Mapper',
+    titleTemplate: `${config.app.short_name} • %s`,
+    title: config.app.name,
     meta: [
       { charset: 'utf-8' },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1, user-scalable=no'
       },
-      { hid: 'description', name: 'description', content: '' }
+      { hid: 'description', name: 'description', content: '' },
+      { name: 'google', content: 'notranslate' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -56,7 +59,11 @@ export default {
 
   css: ['@mdi/font/css/materialdesignicons.min.css', '~/assets/variables.css'],
 
-  plugins: [{ src: '~/plugins/themeMode', mode: 'client' }],
+  plugins: [
+    { src: '~/plugins/theme', mode: 'client' },
+    { src: '~/plugins/language', mode: 'client' },
+    { src: '~/plugins/clipboard', mode: 'client' }
+  ],
 
   buildModules: ['@nuxtjs/vuetify'],
 
@@ -66,6 +73,7 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxt/content',
     '@nuxtjs/pwa',
+    '@nuxtjs/i18n',
     '@nuxtjs/toast'
   ],
 
@@ -119,6 +127,77 @@ export default {
     }
   },
 
+  pwa: {
+    meta: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      mobileApp: true,
+      mobileAppIOS: true,
+      appleStatusBarStyle: 'black-translucent',
+      favicon: true,
+      name: config.app.name,
+      author: author.name,
+      description: description,
+      theme_color: '#ffffff',
+      lang: 'en',
+      ogType: 'website',
+      ogHost: config.host,
+      ogImage: {
+        path: `/icon.png`,
+        width: '50',
+        height: '50',
+        type: 'image/png'
+      },
+      ogUrl: `${config.host}`,
+      twitterCard: 'summary_card',
+      twitterSite: `${config.host}`,
+      twitterCreator: author.name,
+      nativeUI: true
+    },
+    manifest: {
+      name: config.app.name,
+      short_name: config.app.short_name,
+      description: description || config.app.name,
+      lang: 'en',
+      display: 'standalone',
+      background_color: '#ffffff',
+      start_url: `/?standalone=true`,
+      useWebmanifestExtension: false,
+      orientation: 'portrait'
+    }
+  },
+
+  i18n: {
+    lazy: false,
+    langDir: 'lang/',
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.js',
+        name: 'English'
+      },
+      {
+        code: 'ru',
+        iso: 'ru-RU',
+        file: 'ru-RU.js',
+        name: 'Russia'
+      },
+      {
+        code: 'ua',
+        iso: 'ua-UA',
+        file: 'ua-UA.js',
+        name: 'Ukraine'
+      }
+    ],
+    defaultLocale: 'en',
+    detectBrowserLanguage: false,
+    vueI18n: {
+      fallbackLocale: 'en'
+    }
+  },
+
   toast: {
     type: 'default',
     theme: 'toasted-primary',
@@ -141,8 +220,11 @@ export default {
   content: {},
 
   vuetify: {
-    defaultAssets: false,
-
+    defaultAssets: {
+      font: {
+        family: 'Marmelad'
+      }
+    },
     icons: {
       iconfont: 'mdi'
     },
@@ -150,6 +232,9 @@ export default {
     treeShake: true,
     theme: {
       dark: false,
+      options: {
+        customProperties: true
+      },
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -172,5 +257,14 @@ export default {
     }
   ],
 
-  build: {}
+  build: {
+    publicPath: 'app/',
+    babel: {
+      plugins: [
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
+        ['@babel/plugin-proposal-private-methods', { loose: true }],
+        ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
+      ]
+    }
+  }
 };

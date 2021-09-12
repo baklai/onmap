@@ -1,8 +1,5 @@
 <template>
-  <v-container>
-    <AppSidebar />
-    Options
-  </v-container>
+  <v-container> Options </v-container>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-app-bar dark clipped-right dense flat color="#37474f">
+    <!-- <v-app-bar clipped-right dense rounded>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -94,16 +94,16 @@
         </template>
         <span> Scan menu </span>
       </v-tooltip>
-    </v-app-bar>
+    </v-app-bar> -->
 
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       app
       permanent
       v-model="leftDrawer"
       :mini-variant.sync="miniDrawer"
       width="430"
     >
-      <AppSidebar :app="false" :absolute="true" />
+      <NavigationDrawer :app="false" :absolute="true" />
 
       <v-sheet width="100%" color="transparent">
         <v-list three-line class="pl-14">
@@ -275,13 +275,52 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
     <v-row ref="ddd">
       <v-col cols="12">
         <AppReport :report="report" />
       </v-col>
     </v-row>
+
+    <v-card class="mx-auto" max-width="344">
+      <v-card-text>
+        <div>Word of the Day</div>
+        <p class="text-h4 text--primary">el·ee·mos·y·nar·y</p>
+        <p>adjective</p>
+        <div class="text--primary">
+          relating to or dependent on charity; charitable.<br />
+          "an eleemosynary educational institution."
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn text color="teal accent-4" @click="reveal = true">
+          Learn More
+        </v-btn>
+      </v-card-actions>
+
+      <v-expand-transition>
+        <v-card
+          v-if="reveal"
+          class="transition-fast-in-fast-out v-card--reveal"
+          style="height: 100%"
+        >
+          <v-card-text class="pb-0">
+            <p class="text-h4 text--primary">Origin</p>
+            <p>
+              late 16th century (as a noun denoting a place where alms were
+              distributed): from medieval Latin eleemosynarius, from late Latin
+              eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’
+            </p>
+          </v-card-text>
+          <v-card-actions class="pt-0">
+            <v-btn text color="teal accent-4" @click="reveal = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-expand-transition>
+    </v-card>
 
     <v-navigation-drawer v-model="rightDrawer" app temporary right width="400">
       <v-sheet width="100%" color="transparent">

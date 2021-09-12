@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <NavDrawer />
     <v-main>
       <nuxt />
     </v-main>

@@ -1,12 +1,11 @@
-@import '~vuetify/src/styles/styles.sass';
+@import url('https://fonts.googleapis.com/css2?family=Marmelad&display=swap');
 
 // Globals
-$body-font-family: 'Segoe UI', 'segoeUI', Frutiger, 'Frutiger Linotype',
-  'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+$body-font-family: 'Marmelad', sans-serif;
 
 $material-light: (
   app-bar: #ffffff,
-  background: #ffffff,
+  background: #f8f8f8,
   navigation-drawer: #ffffff,
   bottom-navigation: #ffffff,
   cards: #ffffff,
@@ -15,9 +14,11 @@ $material-light: (
 
 $material-dark: (
   app-bar: #1a202c,
-  background: #1a202c,
+  background: #171e31,
   navigation-drawer: #1a202c,
   bottom-navigation: #1a202c,
   cards: #1a202c,
   toolbar: #1a202c
 );
+
+@import '~vuetify/src/styles/styles.sass';

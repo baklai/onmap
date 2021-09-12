@@ -1,35 +1,54 @@
 {
   "name": "onmap",
   "version": "1.0.0",
-  "description": "Online Network Mapper",
+  "description": "ONMAP («Online Network Mapper») - Web application for network exploration and security auditing.",
+  "author": {
+    "name": "Dmitrii Baklai",
+    "email": "d.n.baklai@gmail.com",
+    "url": "https://baklai.github.io"
+  },
+  "config": {
+    "host": "https://baklai.github.io",
+    "app": {
+      "name": "Online Network Mapper",
+      "short_name": "ONMAP"
+    },
+    "social": {
+      "github": "https://github.com/baklai",
+      "facebook": "https://www.facebook.com/dmitrii.baklai/",
+      "linkedin": "https://www.linkedin.com/in/dmitrii-baklai-1370a3170/"
+    }
+  },
+  "homepage": "https://github.com/baklai/onmap#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baklai/onmap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/baklai/onmap/issues"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "vue.js",
+    "nmap",
+    "nuxt",
+    "pwa",
+    "jwt",
+    "api"
+  ],
+  "license": "MIT",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/baklai/onmap.git"
-  },
-  "keywords": [
-    "Node.js",
-    "NMAP",
-    "REST",
-    "API",
-    "Express",
-    "JWT"
-  ],
-  "author": "Dmitrii Baklai <d.n.baklai@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/baklai/onmap/issues"
-  },
-  "homepage": "https://github.com/baklai/onmap#readme",
   "dependencies": {
     "@nuxt/content": "^1.14.0",
     "@nuxtjs/auth-next": "^5.0.0-1621716493.b9b36c6",
     "@nuxtjs/axios": "^5.13.4",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/i18n": "^7.0.3",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/toast": "^3.3.1",
     "bcrypt": "^5.0.1",
@@ -44,7 +63,8 @@
     "moment": "^2.29.1",
     "mongoose": "^5.12.11",
     "morgan": "^1.10.0",
-    "nuxt": "^2.13.3"
+    "nuxt": "^2.13.3",
+    "v-clipboard": "^2.2.3"
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",
