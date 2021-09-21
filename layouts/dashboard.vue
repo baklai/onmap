@@ -30,7 +30,7 @@
     </v-navigation-drawer>
 
     <v-main>
-      <nuxt />
+      <nuxt v-if="$nuxt.$loading" />
     </v-main>
   </v-app>
 </template>

@@ -19,7 +19,7 @@ process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
 export default {
   telemetry: false,
 
-  ssr: false,
+  ssr: true,
 
   cli: {
     badgeMessages: [
@@ -53,8 +53,10 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
+  // loading: '@/components/LoadingBar.vue',
+
   loading: {
-    color: '#2196f3'
+    continuous: true
   },
 
   css: ['@mdi/font/css/materialdesignicons.min.css', '~/assets/variables.css'],

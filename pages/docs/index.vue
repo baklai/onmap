@@ -60,6 +60,9 @@ export default {
   async asyncData({ $content }) {
     let article;
     const articles = await $content().sortBy('title').fetch();
+
+    console.log(articles);
+
     try {
       article = await $content('about').fetch();
     } catch (err) {
