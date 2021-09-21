@@ -10,14 +10,14 @@
     <template v-slot:prepend>
       <router-link to="/">
         <v-avatar size="36" class="d-block text-center mx-auto mb-4">
-          <img :src="require('~/static/favicon.svg')" />
+          <img :src="require('~/static/img/logo-app.png')" />
         </v-avatar>
       </router-link>
     </template>
     <v-layout column fill-height>
       <v-spacer />
-      <v-list flat dense>
-        <!-- <v-list-item link to="/" class="mb-2">
+      <v-list flat>
+        <v-list-item link to="/" class="mb-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -29,9 +29,9 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.home') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
 
-        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/dashboard">
+        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/dashboard">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -43,7 +43,7 @@
           <v-list-item-content>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
 
         <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/users">
           <v-tooltip right>
@@ -73,7 +73,7 @@
           </v-list-item-content>
         </v-list-item> -->
 
-        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
+        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -85,9 +85,9 @@
           <v-list-item-content>
             <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
 
-        <!-- <v-list-item link to="/about" class="my-2">
+        <v-list-item link to="/about" class="my-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -99,9 +99,9 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.about') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
 
-        <!-- <v-list-item link to="/contacts" class="my-2">
+        <v-list-item link to="/contacts" class="my-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -113,7 +113,7 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.contacts') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item> -->
+        </v-list-item>
       </v-list>
       <v-spacer />
     </v-layout>

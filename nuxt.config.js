@@ -167,6 +167,8 @@ export default {
     }
   },
 
+  content: {},
+
   i18n: {
     lazy: false,
     langDir: 'lang/',
@@ -216,8 +218,6 @@ export default {
       }
     ]
   },
-
-  content: {},
 
   vuetify: {
     defaultAssets: {
