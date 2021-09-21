@@ -283,44 +283,71 @@
       </v-col>
     </v-row>
 
-    <v-card class="mx-auto" max-width="344">
-      <v-card-text>
-        <div>Word of the Day</div>
-        <p class="text-h4 text--primary">el·ee·mos·y·nar·y</p>
-        <p>adjective</p>
-        <div class="text--primary">
-          relating to or dependent on charity; charitable.<br />
-          "an eleemosynary educational institution."
-        </div>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn text color="teal accent-4" @click="reveal = true">
-          Learn More
-        </v-btn>
-      </v-card-actions>
+    <v-data-table
+      dense
+      show-select
+      v-model="selectedReport"
+      item-key="_id"
+      :headers="headers"
+      :items="reports"
+      :search="search"
+      :items-per-page="5"
+      :footer-props="{
+        itemsPerPageOptions: [5, 10, 25, 50, -1],
+        itemsPerPageText: 'Rows per reports:',
 
-      <v-expand-transition>
-        <v-card
-          v-if="reveal"
-          class="transition-fast-in-fast-out v-card--reveal"
-          style="height: 100%"
-        >
-          <v-card-text class="pb-0">
-            <p class="text-h4 text--primary">Origin</p>
-            <p>
-              late 16th century (as a noun denoting a place where alms were
-              distributed): from medieval Latin eleemosynarius, from late Latin
-              eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’
-            </p>
-          </v-card-text>
-          <v-card-actions class="pt-0">
-            <v-btn text color="teal accent-4" @click="reveal = false">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-expand-transition>
-    </v-card>
+        showFirstLastPage: true,
+        showCurrentPage: true
+      }"
+      loading-text="Loading... Please wait"
+      no-data-text="No data available"
+    >
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-list-item class="pr-0">
+          <v-btn
+            icon
+            small
+            color="green lighten-1"
+            @click="getReportById(item._id)"
+          >
+            <v-icon small>mdi-eye-outline</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            small
+            color="blue lighten-1"
+            @click="saveReport(item._id)"
+          >
+            <v-icon small>mdi-content-save-outline</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            small
+            color="red lighten-1"
+            @click="deleteReport(item._id)"
+          >
+            <v-icon small>mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </v-list-item>
+      </template>
+
+      <template v-slot:[`item.os`]="{}">
+        <v-icon>mdi-desktop-classic</v-icon>
+      </template>
+
+      <template v-slot:[`item.target`]="{ item }">
+        <v-list-item dense class="pl-0 pr-0">
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.target }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              <small> {{ item.updatedAt | dateToStr }} </small>
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-data-table>
 
     <v-navigation-drawer v-model="rightDrawer" app temporary right width="400">
       <v-sheet width="100%" color="transparent">
@@ -479,12 +506,6 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <v-footer absolute padless fixed color="transparent">
-      <v-col cols="12" class="text-center">
-        <span>ONMAP &copy; {{ new Date().getFullYear() }}</span>
-      </v-col>
-    </v-footer>
   </v-container>
 </template>
 
@@ -492,8 +513,13 @@
 export default {
   middleware: ['auth'],
 
+  layout: 'dd',
+
   async asyncData({ $axios }) {
     const { data: reports } = await $axios.get('reports', {});
+
+    console.log(reports);
+
     const { data: profiles } = await $axios.get('profiles', {});
     return { reports, profiles };
   },
@@ -502,7 +528,7 @@ export default {
     return {
       miniDrawer: null,
       leftDrawer: null,
-      rightDrawer: true,
+      rightDrawer: false,
 
       report: null,
 
@@ -714,9 +740,9 @@ export default {
 </script>
 
 <style>
-.v-data-table {
+/* .v-data-table {
   background-color: transparent !important;
-}
+} */
 
 .v-data-table th,
 td {

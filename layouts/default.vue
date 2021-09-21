@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavDrawer />
+    <AppNavDrawer />
     <v-main>
       <nuxt />
     </v-main>
@@ -16,15 +16,7 @@ export default {
 </script>
 
 <style>
-.v-main {
-  background-image: url('/img/bg-app.png') !important;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
-
-.v-btn::before {
+/* .v-btn::before {
   background-color: transparent !important;
 }
 
@@ -36,5 +28,5 @@ export default {
 .v-input .v-label {
   height: unset !important;
   line-height: unset !important;
-}
+} */
 </style>

@@ -1,24 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Marmelad&display=swap');
-
-// Globals
-$body-font-family: 'Marmelad', sans-serif;
-
 $material-light: (
-  app-bar: #ffffff,
-  background: #f8f8f8,
-  navigation-drawer: #ffffff,
-  bottom-navigation: #ffffff,
-  cards: #ffffff,
-  toolbar: #ffffff
+  app-bar: #f8f8f8,
+  background: #ffffff,
+  navigation-drawer: #f8f8f8
 );
 
 $material-dark: (
-  app-bar: #1a202c,
-  background: #171e31,
-  navigation-drawer: #1a202c,
-  bottom-navigation: #1a202c,
-  cards: #1a202c,
-  toolbar: #1a202c
+  app-bar: #333333,
+  background: #1e1e1e,
+  navigation-drawer: #333333
 );
 
 @import '~vuetify/src/styles/styles.sass';

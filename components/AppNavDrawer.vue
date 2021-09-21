@@ -1,17 +1,15 @@
 <template>
   <v-navigation-drawer
-    floating
-    permanent
-    touchless
     mini-variant
-    mini-variant-width="64"
+    :permanent="drawer"
+    v-model="drawer"
     :absolute="absolute"
     :app="app"
     class="pt-3"
   >
     <template v-slot:prepend>
       <router-link to="/">
-        <v-avatar size="36" class="d-block text-center mx-auto mb-6">
+        <v-avatar size="36" class="d-block text-center mx-auto mb-4">
           <img :src="require('~/static/favicon.svg')" />
         </v-avatar>
       </router-link>
@@ -19,7 +17,7 @@
     <v-layout column fill-height>
       <v-spacer />
       <v-list flat dense>
-        <v-list-item link to="/" class="mb-2">
+        <!-- <v-list-item link to="/" class="mb-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -31,9 +29,9 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.home') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/dashboard">
+        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/dashboard">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -45,9 +43,9 @@
           <v-list-item-content>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/users">
+        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/users">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -59,8 +57,9 @@
           <v-list-item-content>
             <v-list-item-title>Users</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/options">
+        </v-list-item> -->
+
+        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/options">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -72,9 +71,9 @@
           <v-list-item-content>
             <v-list-item-title>Options</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
+        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -86,9 +85,9 @@
           <v-list-item-content>
             <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
-        <v-list-item link to="/about" class="my-2">
+        <!-- <v-list-item link to="/about" class="my-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -100,8 +99,9 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.about') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
-        <v-list-item link to="/contacts" class="my-2">
+        </v-list-item> -->
+
+        <!-- <v-list-item link to="/contacts" class="my-2">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -113,7 +113,7 @@
           <v-list-item-content>
             <v-list-item-title>{{ $t('menu.contacts') }}</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
       <v-spacer />
     </v-layout>
@@ -233,7 +233,11 @@ export default {
     },
     absolute: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    drawer: {
+      type: Boolean,
+      default: null
     }
   },
   data() {
@@ -262,14 +266,27 @@ export default {
       this.$i18n.setLocale(code);
       localStorage.setItem('lang.code', code);
     },
+
     toggle_dark_mode: function () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());
     },
+
     async Logout() {
       this.$toast.success('Logout successfully completed!');
       await this.$auth.logout('local');
     }
   }
+  // watch: {
+  //   drawer(value) {
+  //     return value;
+  //   }
+  // }
 };
 </script>
+
+<style scoped>
+.theme--dark.v-navigation-drawer {
+  background-color: #333333 !important;
+}
+</style>

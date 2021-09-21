@@ -100,8 +100,8 @@ export default {
       }
     },
     redirect: {
-      login: '/signin',
-      logout: '/signin',
+      login: '/auth/signin',
+      logout: '/auth/signin',
       callback: false,
       home: '/'
     },

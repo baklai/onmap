@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  middleware: 'redirecthome',
+  layout: 'application',
   data() {
     return {};
   }
