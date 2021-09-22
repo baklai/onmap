@@ -10,9 +10,14 @@
 
 <script>
 export default {
+  middleware: ['auth'],
+
   layout: 'application',
+
   data() {
-    return {};
+    return {
+      dd: { ss: 'ss', bb: 'bb' }
+    };
   }
 };
 </script>

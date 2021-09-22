@@ -52,16 +52,16 @@
 
 <script>
 export default {
+  layout: 'docs',
   head() {
     return {
       title: this.article ? this.article.title : 'Help'
     };
   },
+
   async asyncData({ $content }) {
     let article;
     const articles = await $content().sortBy('title').fetch();
-
-    console.log(articles);
 
     try {
       article = await $content('about').fetch();

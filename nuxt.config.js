@@ -19,7 +19,7 @@ process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
 export default {
   telemetry: false,
 
-  ssr: true,
+  ssr: false,
 
   cli: {
     badgeMessages: [
@@ -53,11 +53,7 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
-  // loading: '@/components/LoadingBar.vue',
-
-  loading: {
-    continuous: true
-  },
+  loading: '@/components/LoadingBar.vue',
 
   css: ['@mdi/font/css/materialdesignicons.min.css', '~/assets/variables.css'],
 
@@ -222,11 +218,11 @@ export default {
   },
 
   vuetify: {
-    defaultAssets: {
-      font: {
-        family: 'Marmelad'
-      }
-    },
+    // defaultAssets: {
+    //   font: {
+    //     family: 'Marmelad'
+    //   }
+    // },
     icons: {
       iconfont: 'mdi'
     },

@@ -1,7 +1,7 @@
 <template>
-  <v-app v-if="$nuxt.$loading">
-    <NavAppDrawer :drawer="drawer" :pages="subPages" />
-    <NavAppBar :drawer="drawer" />
+  <v-app>
+    <!-- <NavAppDrawer :drawer="drawer" :pages="subPages" />
+    <NavAppBar :drawer="drawer" /> -->
     <v-main>
       <nuxt />
     </v-main>
@@ -10,6 +10,12 @@
 
 <script>
 export default {
+  async fetch() {
+    const posts = await this.$content().sortBy('title').fetch();
+
+    console.log(posts);
+  },
+
   data() {
     return {
       drawer: null,

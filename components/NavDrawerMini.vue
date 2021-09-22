@@ -31,7 +31,12 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/dashboard">
+        <v-list-item
+          v-if="$auth.loggedIn"
+          link
+          class="mb-2"
+          to="/admin/dashboard"
+        >
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -45,7 +50,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/users">
+        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="admin/users">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -190,9 +195,9 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-divider class="mx-6" />
+        <v-divider class="mx-4" />
 
-        <v-list-item link to="/signin" v-if="!$auth.loggedIn">
+        <v-list-item link to="/auth/signin" v-if="!$auth.loggedIn">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">

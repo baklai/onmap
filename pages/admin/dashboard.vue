@@ -196,6 +196,8 @@
 export default {
   middleware: ['auth'],
 
+  layout: 'dashboard',
+
   async asyncData({ $axios }) {
     const { data: users } = await $axios.get('users', {});
 

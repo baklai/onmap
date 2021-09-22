@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <AppNavDrawer />
+  <v-app v-if="$nuxt.$loading">
+    <NavDrawerMini />
     <v-main>
-      <nuxt v-if="$nuxt.$loading" />
+      <nuxt />
     </v-main>
   </v-app>
 </template>
