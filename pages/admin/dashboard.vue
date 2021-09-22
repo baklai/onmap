@@ -34,9 +34,6 @@ export default {
 
   async asyncData({ $axios }) {
     const { data: users } = await $axios.get('users', {});
-
-    console.log(users);
-
     return { users };
   },
 
@@ -47,9 +44,6 @@ export default {
   methods: {
     async getUsers() {
       const { data: users } = await this.$axios.get('users', {});
-
-      console.log(users);
-
       this.users = users;
     },
     editItem(item) {

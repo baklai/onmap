@@ -1,6 +1,6 @@
 <template>
   <v-app v-if="$nuxt.$loading">
-    <NavAppDrawer :drawer="drawer" :pages="subPages" />
+    <NavAppDrawer :drawer="drawer" :pages="subPages" :page="currentPage" />
     <NavAppBar :drawer="drawer" />
     <v-main>
       <nuxt />
@@ -34,6 +34,9 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    console.log(this.$route.fullPath);
   }
 };
 </script>
