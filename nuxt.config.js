@@ -72,7 +72,6 @@ export default {
   buildModules: ['@nuxtjs/vuetify'],
 
   modules: [
-    '@nuxtjs/dotenv',
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxt/content',
@@ -220,11 +219,6 @@ export default {
   },
 
   vuetify: {
-    // defaultAssets: {
-    //   font: {
-    //     family: 'Marmelad'
-    //   }
-    // },
     icons: {
       iconfont: 'mdi'
     },

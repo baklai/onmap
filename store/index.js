@@ -1,4 +1,4 @@
-import { config, version } from '@/package.json';
+import { config } from '@/package.json';
 
 export const state = () => ({
   author: {
@@ -59,7 +59,6 @@ export const state = () => ({
   app: {
     name: config.app.name,
     short_name: config.app.short_name,
-    version: version,
     description: config.app.description,
 
     links: [
