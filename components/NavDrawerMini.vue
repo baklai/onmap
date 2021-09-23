@@ -123,6 +123,28 @@
       <v-spacer />
     </v-layout>
     <template v-slot:append>
+      <v-list flat dense>
+        <v-list-item
+          link
+          class="mb-2 d-none d-lg-block"
+          target="_blank"
+          v-for="item in socialLinks"
+          :key="item.title"
+          :href="item.href"
+        >
+          <v-tooltip right>
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item-icon v-bind="attrs" v-on="on">
+                <v-icon color="#252526">{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+            </template>
+            <span>{{ item.title }}</span>
+          </v-tooltip>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
       <v-expand-transition>
         <v-list dense flat v-if="langs">
           <v-list-item
@@ -144,27 +166,6 @@
         </v-list>
       </v-expand-transition>
       <v-list flat dense>
-        <!-- <v-list-item
-          link
-          class="mb-2 d-none d-lg-block"
-          target="_blank"
-          v-for="item in socialLinks"
-          :key="item.title"
-          :href="item.href"
-        >
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon color="#252526">{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>{{ item.title }}</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
-
         <v-list-item link class="my-2" @click.prevent="langs = !langs">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
@@ -257,7 +258,8 @@ export default {
       );
     },
     socialLinks() {
-      return this.$store.state.socialLinks;
+      console.log(this.$store.state.social);
+      return this.$store.state.social;
     }
   },
   methods: {

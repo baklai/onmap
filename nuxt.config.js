@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors';
 import dotenv from 'dotenv';
 import path from 'path';
 
-import { name, version, description, author, config } from './package.json';
+import { config } from './package.json';
 
 dotenv.config({
   path:
@@ -15,6 +15,8 @@ process.env.HOST =
   process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 
 process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
+
+console.log(process.env);
 
 export default {
   telemetry: false,
@@ -47,7 +49,11 @@ export default {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1, user-scalable=no'
       },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: config.app.description
+      },
       { name: 'google', content: 'notranslate' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -76,10 +82,6 @@ export default {
   ],
 
   components: true,
-
-  dotenv: {
-    filename: process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev'
-  },
 
   axios: {
     credentials: true,
@@ -134,28 +136,28 @@ export default {
       appleStatusBarStyle: 'black-translucent',
       favicon: true,
       name: config.app.name,
-      author: author.name,
-      description: description,
+      author: config.author.name,
+      description: config.app.description,
       theme_color: '#ffffff',
       lang: 'en',
       ogType: 'website',
-      ogHost: config.host,
+      ogHost: process.env.APP_HOST,
       ogImage: {
         path: `/icon.png`,
         width: '50',
         height: '50',
         type: 'image/png'
       },
-      ogUrl: `${config.host}`,
+      ogUrl: `${process.env.APP_HOST}`,
       twitterCard: 'summary_card',
-      twitterSite: `${config.host}`,
-      twitterCreator: author.name,
+      twitterSite: `${process.env.APP_HOST}`,
+      twitterCreator: config.author.name,
       nativeUI: true
     },
     manifest: {
       name: config.app.name,
       short_name: config.app.short_name,
-      description: description || config.app.name,
+      description: config.app.description,
       lang: 'en',
       display: 'standalone',
       background_color: '#ffffff',

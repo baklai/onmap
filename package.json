@@ -8,15 +8,20 @@
     "url": "https://baklai.github.io"
   },
   "config": {
-    "host": "https://baklai.github.io",
     "app": {
       "name": "Online Network Mapper",
-      "short_name": "ONMAP"
+      "short_name": "ONMAP",
+      "description": "Web application for network exploration and security auditing."
     },
-    "social": {
-      "github": "https://github.com/baklai",
-      "facebook": "https://www.facebook.com/dmitrii.baklai/",
-      "linkedin": "https://www.linkedin.com/in/dmitrii-baklai-1370a3170/"
+    "author": {
+      "name": "Dmitrii Baklai",
+      "email": "d.n.baklai@gmail.com",
+      "url": "https://baklai.github.io",
+      "social": {
+        "github": "https://github.com/baklai",
+        "facebook": "https://www.facebook.com/dmitrii.baklai/",
+        "linkedin": "https://www.linkedin.com/in/dmitrii-baklai-1370a3170/"
+      }
     }
   },
   "homepage": "https://github.com/baklai/onmap#readme",

@@ -1,30 +1,87 @@
-import { author, config } from '~/package.json';
+import { config, version } from '@/package.json';
 
 export const state = () => ({
-  name: 'WEBNMAP',
-  version: process.env.npm_package_version || '',
-  description: 'Web utility for network discovery and security auditing',
-  author: 'Dmitrii Baklai',
+  author: {
+    name: config.author.name,
+    email: config.author.email,
+    url: config.author.url
+  },
 
-  author: author,
-  copyright: `Copyright \u00A9 ${new Date().getFullYear()} ${author.name}`,
+  copyright: `Copyright \u00A9 ${new Date().getFullYear()} ${
+    config.author.name
+  }`,
 
   social: {
-    facebook: {
-      title: 'Facebook',
-      icon: 'mdi-facebook',
-      href: config.social.facebook
+    facebook: config.author.social.facebook
+      ? {
+          title: 'Facebook',
+          icon: 'mdi-facebook',
+          href: config.author.social.facebook
+        }
+      : null,
+    github: config.author.social.github
+      ? {
+          title: 'Github',
+          icon: 'mdi-github',
+          href: config.author.social.github
+        }
+      : null,
+    linkedin: config.author.social.linkedin
+      ? {
+          title: 'Linkedin',
+          icon: 'mdi-linkedin',
+          href: config.author.social.linkedin
+        }
+      : null
+  },
+
+  board: [
+    {
+      href: '/board/dashboard',
+      icon: 'mdi-view-dashboard-outline',
+      title: 'Dashboard',
+      subtitle: 'List of reports from storage'
     },
-    github: {
-      title: 'Github',
-      icon: 'mdi-github',
-      href: config.social.github
+    {
+      href: '/board/options',
+      icon: 'mdi-cog-outline',
+      title: 'Options',
+      subtitle: 'Scan service'
     },
-    linkedin: {
-      title: 'Linkedin',
-      icon: 'mdi-linkedin',
-      href: config.social.linkedin
+    {
+      href: '/board/users',
+      icon: 'mdi-account-supervisor-outline',
+      title: 'Users',
+      subtitle: 'Allow notifications'
     }
+  ],
+
+  app: {
+    name: config.app.name,
+    short_name: config.app.short_name,
+    version: version,
+    description: config.app.description,
+
+    links: [
+      {
+        href: '/onmap/reports',
+        icon: 'mdi-clipboard-list-outline',
+        title: 'Reports',
+        subtitle: 'List of reports from storage'
+      },
+      {
+        href: '/onmap/scaner',
+        icon: 'mdi-lan',
+        title: 'Scaner',
+        subtitle: 'Scan service'
+      },
+      {
+        href: '/onmap/ping-icmp',
+        icon: 'mdi-lan-pending',
+        title: 'ICMP Ping',
+        subtitle: 'Allow notifications'
+      }
+    ]
   }
 });
 

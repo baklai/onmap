@@ -17,4 +17,13 @@ $ npm run start
 
 ```
 
+## Config key
+
+API_URI
+APP_HOST
+MONGO_URI
+BCRYPT_SALT
+TOKEN_EXPIRES_IN
+JWT_SECRET_KEY
+
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
