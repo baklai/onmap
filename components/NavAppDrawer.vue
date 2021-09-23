@@ -5,14 +5,14 @@
       <v-list three-line class="pl-14">
         <v-list-item>
           <v-list-item-avatar>
-            <v-icon large> mdi-clipboard-list-outline </v-icon>
+            <v-icon large>{{ page().icon }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="body-1 text-uppercase font-weight-bold">
-              List of reports
+              {{ page().title }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              List of reports from scan report storage
+              {{ page().subtitle }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -72,6 +72,13 @@ export default {
     }
   },
   methods: {
+    page: function () {
+      console.log(this.pages);
+      const dd = this.pages.find((item) => item.href === this.$route.fullPath);
+      console.log(dd);
+      return dd;
+    },
+
     toggleDarkMode: function () {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());

@@ -3,6 +3,7 @@
     <NavAppDrawer :drawer="drawer" :pages="subPages" />
     <NavAppBar :drawer="drawer" />
     <v-main>
+      {{ page() }}
       <nuxt />
     </v-main>
   </v-app>
@@ -13,6 +14,7 @@ export default {
   data() {
     return {
       drawer: null,
+      currentPage: null,
       subPages: [
         {
           href: '/onmap/reports',
@@ -34,6 +36,17 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    page() {
+      console.log(this.$route);
+      return this.$route.name;
+    }
   }
+  // mounted() {
+  //   this.currentPage = this.subPages.find(
+  //     (item) => item.href === this.$route.fullPath
+  //   );
+  // }
 };
 </script>
