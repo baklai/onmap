@@ -6,7 +6,7 @@
 export default {
   middleware: ['auth'],
 
-  layout: 'application',
+  layout: 'apps',
 
   data() {
     return {};

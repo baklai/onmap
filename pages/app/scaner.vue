@@ -162,7 +162,7 @@
 export default {
   middleware: ['auth'],
 
-  layout: 'application',
+  layout: 'apps',
 
   async asyncData({ $axios }) {
     const { data: reports } = await $axios.get('reports', {});
