@@ -4,6 +4,18 @@ import path from 'path';
 
 import { config } from './package.json';
 
+// import path from 'path'
+// import fs from 'fs'
+
+// export default {
+//   server: {
+//     https: {
+//       key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
+//       cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
+//     }
+//   }
+// }
+
 dotenv.config({
   path:
     process.env.NODE_ENV === 'production'

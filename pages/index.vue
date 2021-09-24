@@ -13,6 +13,11 @@ export default {
   middleware: 'redirecthome',
   data() {
     return {};
+  },
+  computed: {
+    page() {
+      return this.$route.name;
+    }
   }
 };
 </script>

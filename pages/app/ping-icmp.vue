@@ -10,12 +10,6 @@ export default {
 
   data() {
     return {};
-  },
-
-  filters: {},
-
-  computed: {},
-
-  methods: {}
+  }
 };
 </script>

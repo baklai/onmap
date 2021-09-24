@@ -20,7 +20,22 @@
     </v-sheet>
 
     <v-list subheader two-line flat class="pl-14">
-      <v-subheader>ONMAP Pages</v-subheader>
+      <v-subheader>Application service</v-subheader>
+      <v-list-item-group>
+        <v-list-item link v-for="(item, i) in pages" :key="i" :to="item.href">
+          <v-list-item-avatar>
+            <v-icon> {{ item.icon }} </v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title> {{ item.title }} </v-list-item-title>
+            <v-list-item-subtitle> {{ item.subtitle }} </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+
+    <v-list subheader two-line flat class="pl-14">
+      <v-subheader>Dashboard service</v-subheader>
       <v-list-item-group>
         <v-list-item link v-for="(item, i) in pages" :key="i" :to="item.href">
           <v-list-item-avatar>
@@ -50,10 +65,6 @@ export default {
     drawer: {
       type: Boolean,
       default: null
-    },
-    pages: {
-      type: Array,
-      default: null
     }
   },
   data() {
@@ -62,13 +73,11 @@ export default {
     };
   },
   computed: {
-    locales() {
-      return this.$i18n.locales.filter(
-        (locale) => locale.code !== this.$i18n.locale
-      );
+    appLinks() {
+      return this.$store.state.app.links;
     },
-    socialLinks() {
-      return this.$store.state.socialLinks;
+    boardLinks() {
+      return this.$store.state.core.board;
     }
   },
   methods: {

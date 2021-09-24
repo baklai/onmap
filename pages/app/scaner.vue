@@ -166,9 +166,6 @@ export default {
 
   async asyncData({ $axios }) {
     const { data: reports } = await $axios.get('reports', {});
-
-    console.log(reports);
-
     const { data: profiles } = await $axios.get('profiles', {});
     return { reports, profiles };
   },

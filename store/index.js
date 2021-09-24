@@ -7,10 +7,6 @@ export const state = () => ({
     url: config.author.url
   },
 
-  copyright: `Copyright \u00A9 ${new Date().getFullYear()} ${
-    config.author.name
-  }`,
-
   social: {
     facebook: config.author.social.facebook
       ? {
@@ -35,26 +31,59 @@ export const state = () => ({
       : null
   },
 
-  board: [
-    {
-      href: '/board/dashboard',
+  core: {
+    home: {
+      href: '/',
       icon: 'mdi-view-dashboard-outline',
       title: 'Dashboard',
       subtitle: 'List of reports from storage'
     },
-    {
-      href: '/board/options',
-      icon: 'mdi-cog-outline',
-      title: 'Options',
-      subtitle: 'Scan service'
+    docs: {
+      href: '/docs',
+      icon: 'mdi-view-dashboard-outline',
+      title: 'Dashboard',
+      subtitle: 'List of reports from storage'
     },
-    {
-      href: '/board/users',
-      icon: 'mdi-account-supervisor-outline',
-      title: 'Users',
-      subtitle: 'Allow notifications'
-    }
-  ],
+    contacts: {
+      href: '/contacts',
+      icon: 'mdi-view-dashboard-outline',
+      title: 'Dashboard',
+      subtitle: 'List of reports from storage'
+    },
+    signin: {
+      href: '/board',
+      icon: 'mdi-view-dashboard-outline',
+      title: 'Dashboard',
+      subtitle: 'List of reports from storage'
+    },
+    signup: {
+      href: '/board',
+      icon: 'mdi-view-dashboard-outline',
+      title: 'Dashboard',
+      subtitle: 'List of reports from storage'
+    },
+
+    board: [
+      {
+        href: '/board',
+        icon: 'mdi-view-dashboard-outline',
+        title: 'Dashboard',
+        subtitle: 'List of reports from storage'
+      },
+      {
+        href: '/board/options',
+        icon: 'mdi-cog-outline',
+        title: 'Options',
+        subtitle: 'Scan service'
+      },
+      {
+        href: '/board/users',
+        icon: 'mdi-account-supervisor-outline',
+        title: 'Users',
+        subtitle: 'Allow notifications'
+      }
+    ]
+  },
 
   app: {
     name: config.app.name,
@@ -63,19 +92,19 @@ export const state = () => ({
 
     links: [
       {
-        href: '/onmap/reports',
+        href: '/app/reports',
         icon: 'mdi-clipboard-list-outline',
         title: 'Reports',
         subtitle: 'List of reports from storage'
       },
       {
-        href: '/onmap/scaner',
+        href: '/app/scaner',
         icon: 'mdi-lan',
         title: 'Scaner',
         subtitle: 'Scan service'
       },
       {
-        href: '/onmap/ping-icmp',
+        href: '/app/ping-icmp',
         icon: 'mdi-lan-pending',
         title: 'ICMP Ping',
         subtitle: 'Allow notifications'
@@ -85,9 +114,9 @@ export const state = () => ({
 });
 
 export const getters = {
-  getCopyright: (state) => {
+  copyright: (state) => {
     return `Copyright © ${new Date().getFullYear()} ${
-      state.author
+      state.author.name
     }. All rights reserved.`;
   }
 };

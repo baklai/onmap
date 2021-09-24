@@ -15,9 +15,7 @@ export default {
   layout: 'apps',
 
   data() {
-    return {
-      dd: { ss: 'ss', bb: 'bb' }
-    };
+    return {};
   }
 };
 </script>

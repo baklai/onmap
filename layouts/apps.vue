@@ -1,6 +1,6 @@
 <template>
   <v-app v-if="$nuxt.$loading">
-    <NavAppDrawer :drawer="drawer" :pages="subPages" />
+    <NavAppDrawer :drawer="drawer" />
     <NavAppBar :drawer="drawer" />
     <v-main>
       <nuxt />
@@ -17,8 +17,6 @@ export default {
   },
   computed: {
     page() {
-      console.log(this.$route);
-      console.log(this.$route.fullPath);
       return this.$route.name;
     }
   }
