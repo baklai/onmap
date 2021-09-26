@@ -1,28 +1,36 @@
 <template>
-  <v-navigation-drawer :mini-variant="false" v-model="drawer" app width="380">
+  <v-navigation-drawer app v-model="drawer" :mini-variant="false" width="360">
     <NavDrawerMini :app="false" :absolute="true" :drawer="drawer" />
-    <v-sheet height="128" width="100%">
-      <v-list three-line class="pl-14">
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-icon large>{{ page().icon }}</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title class="body-1 text-uppercase font-weight-bold">
-              {{ page().title }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ page().subtitle }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-sheet>
+
+    <template v-slot:prepend>
+      <v-sheet height="128" width="100%">
+        <v-list three-line class="pl-14">
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-icon large>{{ currentPage.icon }}</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="body-1 text-uppercase font-weight-bold">
+                {{ currentPage.title }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ currentPage.subtitle }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-sheet>
+    </template>
 
     <v-list subheader two-line flat class="pl-14">
-      <v-subheader>Application service</v-subheader>
+      <v-subheader>Application</v-subheader>
       <v-list-item-group>
-        <v-list-item link v-for="(item, i) in pages" :key="i" :to="item.href">
+        <v-list-item
+          link
+          v-for="(item, i) in appLinks"
+          :key="i"
+          :to="item.href"
+        >
           <v-list-item-avatar>
             <v-icon> {{ item.icon }} </v-icon>
           </v-list-item-avatar>
@@ -35,9 +43,14 @@
     </v-list>
 
     <v-list subheader two-line flat class="pl-14">
-      <v-subheader>Dashboard service</v-subheader>
+      <v-subheader>Administrations</v-subheader>
       <v-list-item-group>
-        <v-list-item link v-for="(item, i) in pages" :key="i" :to="item.href">
+        <v-list-item
+          link
+          v-for="(item, i) in boardLinks"
+          :key="i"
+          :to="item.href"
+        >
           <v-list-item-avatar>
             <v-icon> {{ item.icon }} </v-icon>
           </v-list-item-avatar>
@@ -68,52 +81,36 @@ export default {
     }
   },
   data() {
-    return {
-      langs: false
-    };
+    return {};
   },
   computed: {
     appLinks() {
       return this.$store.state.app.links;
     },
     boardLinks() {
-      return this.$store.state.core.board;
+      return this.$store.state.core.links;
+    },
+    currentPage() {
+      const links = [
+        ...this.$store.state.app.links,
+        ...this.$store.state.core.links
+      ];
+      const filter = links.find((item) => item.href === this.$route.fullPath);
+      return filter
+        ? filter
+        : {
+            icon: 'mdi-apps',
+            title: this.$store.state.app.short_name,
+            subtitle: this.$store.state.app.description
+          };
     }
   },
   methods: {
-    page: function () {
-      console.log(this.pages);
-      const dd = this.pages.find((item) => item.href === this.$route.fullPath);
-      console.log(dd);
-      return dd;
-    },
-
-    toggleDarkMode: function () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());
-    },
-
-    toggleLang: function (code) {
-      this.langs = false;
-      this.$i18n.setLocale(code);
-      localStorage.setItem('lang.code', code);
-    },
-
-    toggle_dark_mode: function () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());
-    },
-
-    async Logout() {
-      this.$toast.success('Logout successfully completed!');
-      await this.$auth.logout('local');
-    }
+    // watch: {
+    //   drawer(value) {
+    //     return value;
+    //   }}
   }
-  // watch: {
-  //   drawer(value) {
-  //     return value;
-  //   }
-  // }
 };
 </script>
 

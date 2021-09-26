@@ -14,114 +14,64 @@
         </v-avatar>
       </router-link>
     </template>
-    <v-layout column fill-height>
-      <v-spacer />
-      <v-list flat>
-        <v-list-item link to="/" class="mb-2">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-home-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>{{ $t('menu.home') }}</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('menu.home') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+    <v-list flat>
+      <v-list-item link to="/" class="mb-2">
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item-icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-home-outline</v-icon>
+            </v-list-item-icon>
+          </template>
+          <span>{{ $t('menu.home') }}</span>
+        </v-tooltip>
+        <v-list-item-content>
+          <v-list-item-title>{{ $t('menu.home') }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
-        <v-list-item
-          v-if="$auth.loggedIn"
-          link
-          class="mb-2"
-          to="/admin/dashboard"
-        >
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-view-dashboard-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>Dashboard</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>Dashboard</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item-icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-help-circle-outline</v-icon>
+            </v-list-item-icon>
+          </template>
+          <span>Help</span>
+        </v-tooltip>
+        <v-list-item-content>
+          <v-list-item-title>Help</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
-        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="admin/users">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-account-supervisor-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>Users</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>Users</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
+      <v-list-item link to="/about" class="my-2">
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item-icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-information-outline</v-icon>
+            </v-list-item-icon>
+          </template>
+          <span>{{ $t('menu.about') }}</span>
+        </v-tooltip>
+        <v-list-item-content>
+          <v-list-item-title>{{ $t('menu.about') }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
-        <!-- <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/options">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-cog-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>Options</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>Options</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item> -->
-
-        <v-list-item v-if="$auth.loggedIn" link class="mb-2" to="/docs">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-help-circle-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>Help</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>Help</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link to="/about" class="my-2">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-information-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>{{ $t('menu.about') }}</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('menu.about') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link to="/contacts" class="my-2">
-          <v-tooltip right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-account-circle-outline</v-icon>
-              </v-list-item-icon>
-            </template>
-            <span>{{ $t('menu.contacts') }}</span>
-          </v-tooltip>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('menu.contacts') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-spacer />
-    </v-layout>
+      <v-list-item link to="/contacts" class="my-2">
+        <v-tooltip right>
+          <template v-slot:activator="{ on, attrs }">
+            <v-list-item-icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-account-circle-outline</v-icon>
+            </v-list-item-icon>
+          </template>
+          <span>{{ $t('menu.contacts') }}</span>
+        </v-tooltip>
+        <v-list-item-content>
+          <v-list-item-title>{{ $t('menu.contacts') }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-spacer />
     <template v-slot:append>
       <v-list flat dense>
         <v-list-item
@@ -135,7 +85,7 @@
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon color="#252526">{{ item.icon }}</v-icon>
+                <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
             </template>
             <span>{{ item.title }}</span>
@@ -258,7 +208,6 @@ export default {
       );
     },
     socialLinks() {
-      console.log(this.$store.state.social);
       return this.$store.state.social;
     }
   },
@@ -291,9 +240,3 @@ export default {
   // }
 };
 </script>
-
-<style scoped>
-.theme--dark.v-navigation-drawer {
-  background-color: #333333 !important;
-}
-</style>

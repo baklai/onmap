@@ -25,11 +25,11 @@ export default {
   },
   data() {
     return {};
-  },
-  watch: {
-    drawer(value) {
-      return value;
-    }
   }
+  // watch: {
+  //   drawer(value) {
+  //     return value;
+  //   }
+  // }
 };
 </script>

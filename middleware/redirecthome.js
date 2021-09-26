@@ -1,5 +1,7 @@
-export default function ({ $auth, redirect }) {
+export default function ({ $auth, app }) {
+  console.log(app);
   if ($auth.loggedIn) {
-    return redirect('/app/onmap');
+    return 'apps';
+    // return redirect('/app');
   }
 }

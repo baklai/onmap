@@ -10,7 +10,9 @@
 
 <script>
 export default {
-  middleware: 'redirecthome',
+  layout({ $auth }) {
+    return $auth.loggedIn ? 'apps' : 'default';
+  },
   data() {
     return {};
   },

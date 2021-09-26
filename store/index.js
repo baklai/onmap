@@ -63,21 +63,21 @@ export const state = () => ({
       subtitle: 'List of reports from storage'
     },
 
-    board: [
+    links: [
       {
-        href: '/board',
+        href: '/core/dashboard',
         icon: 'mdi-view-dashboard-outline',
         title: 'Dashboard',
         subtitle: 'List of reports from storage'
       },
       {
-        href: '/board/options',
+        href: '/core/options',
         icon: 'mdi-cog-outline',
         title: 'Options',
         subtitle: 'Scan service'
       },
       {
-        href: '/board/users',
+        href: '/core/users',
         icon: 'mdi-account-supervisor-outline',
         title: 'Users',
         subtitle: 'Allow notifications'
@@ -92,12 +92,6 @@ export const state = () => ({
 
     links: [
       {
-        href: '/app/reports',
-        icon: 'mdi-clipboard-list-outline',
-        title: 'Reports',
-        subtitle: 'List of reports from storage'
-      },
-      {
         href: '/app/scaner',
         icon: 'mdi-lan',
         title: 'Scaner',
@@ -108,6 +102,12 @@ export const state = () => ({
         icon: 'mdi-lan-pending',
         title: 'ICMP Ping',
         subtitle: 'Allow notifications'
+      },
+      {
+        href: '/app/reports',
+        icon: 'mdi-clipboard-list-outline',
+        title: 'Reports',
+        subtitle: 'List of reports from storage'
       }
     ]
   }

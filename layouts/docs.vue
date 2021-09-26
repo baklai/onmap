@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <NavAppDrawer :drawer="drawer" :pages="subPages" />
-    <NavAppBar :drawer="drawer" />
+    <NavDrawerApp :drawer="drawer" />
+    <NavBarApp :drawer="drawer" />
     <v-main>
       <v-container>
         <v-sheet min-height="70vh" rounded="lg" class="ma-3 elevation-1">

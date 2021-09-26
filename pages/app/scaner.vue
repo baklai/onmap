@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-sheet width="100%" color="transparent">
+    <v-sheet width="100%">
       <v-list three-line>
         <v-list-item>
           <v-list-item-avatar>

@@ -1,6 +1,5 @@
 <template>
   <v-container fill-height fluid>
-    <AppSidebar />
     <v-row align="center" justify="center">
       <v-col cols="12" align="center">
         <v-img
@@ -27,6 +26,9 @@ export default {
       type: Object,
       default: null
     }
+  },
+  layout({ $auth }) {
+    return $auth.loggedIn ? 'apps' : 'default';
   },
   head() {
     const title =

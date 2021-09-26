@@ -24,10 +24,6 @@ const scanTarget = async (req, res) => {
   //   range: [req.body.target]
   // };
 
-  console.log('SCAN TARGET');
-
-  console.log(req.user);
-
   const opts = {
     //  timeout: 900,
     json: true,

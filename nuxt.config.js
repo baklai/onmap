@@ -264,7 +264,7 @@ export default {
   ],
 
   build: {
-    publicPath: 'app/',
+    publicPath: 'cdn/',
     babel: {
       plugins: [
         ['@babel/plugin-proposal-class-properties', { loose: true }],

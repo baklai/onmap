@@ -14,19 +14,3 @@ export default {
   }
 };
 </script>
-
-<style>
-/* .v-btn::before {
-  background-color: transparent !important;
-}
-
-.v-btn--active.no-active::before {
-  background-color: transparent !important;
-  opacity: 0 !important;
-}
-
-.v-input .v-label {
-  height: unset !important;
-  line-height: unset !important;
-} */
-</style>
