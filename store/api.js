@@ -1,7 +1,17 @@
 export const actions = {
-  async fetchUsers() {
+  async getUsers() {
     try {
       return await this.$axios.get('users', {});
+    } catch (e) {
+      throw e;
+    }
+  },
+
+  async createUsers(user) {
+    try {
+      console.log(user);
+
+      return await this.$axios.post('users', { user });
     } catch (e) {
       throw e;
     }

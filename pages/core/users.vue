@@ -9,7 +9,6 @@
         :footer-props="{
           itemsPerPageOptions: [5, 10, 15, -1],
           itemsPerPageText: 'Rows per users:',
-
           showFirstLastPage: true,
           showCurrentPage: true
         }"
@@ -20,10 +19,8 @@
         <template v-slot:top>
           <v-toolbar flat>
             <v-icon large left> mdi-account-supervisor-outline </v-icon>
-
             <v-toolbar-title> List of users </v-toolbar-title>
-
-            <v-spacer></v-spacer>
+            <v-spacer />
 
             <v-responsive max-width="260" class="mr-2">
               <v-text-field
@@ -37,7 +34,7 @@
                 prepend-inner-icon="mdi-magnify"
                 label="Search in users"
                 class="ma-0"
-              ></v-text-field>
+              />
             </v-responsive>
 
             <v-tooltip bottom>
@@ -74,7 +71,7 @@
               <v-card>
                 <v-card-title>
                   <v-icon large left> mdi-account-circle-outline </v-icon>
-                  <span class="text-h5">{{ formTitle }}</span>
+                  <span class="text-h5"> {{ formTitle }} </span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -128,7 +125,7 @@
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-spacer></v-spacer>
+                  <v-spacer />
                   <v-btn text @click="close"> Cancel </v-btn>
                   <v-btn text @click="save"> Save </v-btn>
                 </v-card-actions>
@@ -141,10 +138,9 @@
                   Are you sure you want to delete this item?
                 </v-card-title>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn text @click="closeDelete"> Cancel </v-btn>
+                  <v-spacer />
                   <v-btn text @click="deleteItemConfirm"> OK </v-btn>
-                  <v-spacer></v-spacer>
+                  <v-btn text @click="closeDelete"> Cancel </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -153,17 +149,17 @@
 
         <template v-slot:[`item.name`]="{ item }">
           <v-icon left> mdi-account-circle-outline </v-icon>
-          <span>{{ item.name }}</span>
+          <span> {{ item.name }} </span>
         </template>
 
         <template v-slot:[`item.email`]="{ item }">
           <v-icon left> mdi-email-outline </v-icon>
-          <span>{{ item.email }}</span>
+          <span> {{ item.email }} </span>
         </template>
 
         <template v-slot:[`item.login`]="{ item }">
           <v-icon left> mdi-account-outline </v-icon>
-          <span>{{ item.login }}</span>
+          <span> {{ item.login }} </span>
         </template>
 
         <template v-slot:[`item.isActive`]="{ item }">
@@ -174,7 +170,7 @@
             disabled
             color="success"
             v-model="item.isActive"
-          ></v-switch>
+          />
         </template>
 
         <template v-slot:[`item.isAdmin`]="{ item }">
@@ -185,7 +181,7 @@
             disabled
             color="success"
             v-model="item.isAdmin"
-          ></v-switch>
+          />
         </template>
 
         <template v-slot:[`item.actions`]="{ item }">
@@ -196,7 +192,7 @@
             color="green lighten-1"
             @click="editItem(item)"
           >
-            <v-icon small>mdi-eye-outline</v-icon>
+            <v-icon small> mdi-eye-outline </v-icon>
           </v-btn>
           <v-btn
             icon
@@ -227,16 +223,8 @@ export default {
   middleware: ['auth'],
   layout: 'apps',
 
-  //  async asyncData({store, params}) {
-  //   const post = await store.dispatch('post/fetchById', params.id)
-  //   await store.dispatch('post/addView', post)
-  //   return {
-  //     post: {...post, views: ++post.views}
-  //   }
-  // },
-
   async asyncData({ store }) {
-    const { data: users } = await store.dispatch('api/fetchUsers'); //await $axios.get('users', {});
+    const { data: users } = await store.dispatch('api/getUsers');
     return { users };
   },
 
@@ -245,17 +233,6 @@ export default {
       search: null,
       dialog: false,
       dialogDelete: false,
-
-      // created: "2021-09-27T08:00:21.221Z"
-      // ​​email: "root@onmap.localhost"
-      // ​​id: "61517a1512001d39edc33fd0"
-      // ​​isActive: true
-      // ​​isAdmin: true
-      // ​​login: "root"
-      // ​​name: "root"
-      // ​​role: "admin"
-      // ​​updated: "2021-09-27T08:00:21.221Z"
-
       headers: [
         {
           text: 'Name',
@@ -312,8 +289,8 @@ export default {
 
   methods: {
     async getUsers() {
-      const { data: users } = await this.$axios.get('users', {});
-      this.users = users;
+      const { data: users } = await this.$store.dispatch('api/getUsers');
+      return { users };
     },
 
     editItem(item) {
@@ -349,11 +326,20 @@ export default {
       });
     },
 
-    save() {
+    async save() {
       if (this.editedIndex > -1) {
         Object.assign(this.users[this.editedIndex], this.editedItem);
       } else {
-        this.users.push(this.editedItem);
+        console.log(this.editedItem);
+
+        const user = await this.$store.dispatch(
+          'api/createUsers',
+          this.editedItem
+        );
+
+        console.log(user);
+
+        //  this.users.push(this.editedItem);
       }
       this.close();
     }

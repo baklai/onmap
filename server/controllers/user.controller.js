@@ -26,6 +26,8 @@ const findOne = async (req, res, next) => {
 
 const createOne = async (req, res, next) => {
   try {
+    console.log(req.body);
+
     const password = await hash(req.body.password, BCRYPT_SALT);
     const user = await usersService.createOne({ ...req.body, password });
     res.status(200).send(toResponse(user));
