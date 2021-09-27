@@ -29,71 +29,10 @@
 <script>
 export default {
   middleware: ['auth'],
-
   layout: 'apps',
-
-  async asyncData({ $axios }) {
-    const { data: users } = await $axios.get('users', {});
-    return { users };
-  },
 
   data() {
     return {};
-  },
-
-  methods: {
-    async getUsers() {
-      const { data: users } = await this.$axios.get('users', {});
-      this.users = users;
-    },
-    editItem(item) {
-      // this.editedIndex = this.items.indexOf(item);
-      // this.editedItem = Object.assign({}, item);
-      // this.dialog = true;
-    },
-
-    deleteItem(item) {
-      // this.editedIndex = this.items.indexOf(item);
-      // this.editedItem = Object.assign({}, item);
-      // this.dialogDelete = true;
-    },
-
-    deleteItemConfirm() {
-      // this.items.splice(this.editedIndex, 1);
-      // this.closeDelete();
-    },
-
-    close() {
-      // this.dialog = false;
-      // this.$nextTick(() => {
-      //   this.editedItem = Object.assign({}, this.defaultItem);
-      //   this.editedIndex = -1;
-      // });
-    },
-
-    closeDelete() {
-      // this.dialogDelete = false;
-      // this.$nextTick(() => {
-      //   this.editedItem = Object.assign({}, this.defaultItem);
-      //   this.editedIndex = -1;
-      // });
-    },
-
-    save() {
-      // if (this.editedIndex > -1) {
-      //   Object.assign(this.items[this.editedIndex], this.editedItem);
-      // } else {
-      //   this.items.push(this.editedItem);
-      // }
-      // this.close();
-    }
   }
 };
 </script>
-
-<style scoped>
-.v-list.list-users {
-  height: 360px;
-  overflow-y: auto;
-}
-</style>

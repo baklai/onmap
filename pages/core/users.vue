@@ -227,8 +227,16 @@ export default {
   middleware: ['auth'],
   layout: 'apps',
 
-  async asyncData({ $axios }) {
-    const { data: users } = await $axios.get('users', {});
+  //  async asyncData({store, params}) {
+  //   const post = await store.dispatch('post/fetchById', params.id)
+  //   await store.dispatch('post/addView', post)
+  //   return {
+  //     post: {...post, views: ++post.views}
+  //   }
+  // },
+
+  async asyncData({ store }) {
+    const { data: users } = await store.dispatch('api/fetchUsers'); //await $axios.get('users', {});
     return { users };
   },
 

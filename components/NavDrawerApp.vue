@@ -7,7 +7,7 @@
         <v-list three-line class="pl-14">
           <v-list-item>
             <v-list-item-avatar>
-              <v-icon large>{{ currentPage.icon }}</v-icon>
+              <v-icon large> {{ currentPage.icon }} </v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="body-1 text-uppercase font-weight-bold">
@@ -37,7 +37,7 @@
       </v-list-item-group>
     </v-list>
 
-    <v-list subheader two-line flat class="pl-14">
+    <v-list subheader two-line flat class="pl-14" v-if="$auth.loggedIn">
       <v-subheader>Administration</v-subheader>
       <v-list-item-group>
         <v-list-item

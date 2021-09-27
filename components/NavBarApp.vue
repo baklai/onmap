@@ -8,11 +8,11 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn icon>
+    <v-btn icon v-if="$auth.loggedIn">
       <v-icon> mdi-bell-outline </v-icon>
     </v-btn>
 
-    <v-btn icon>
+    <v-btn icon v-if="$auth.loggedIn">
       <v-icon> mdi-account-circle-outline </v-icon>
     </v-btn>
 

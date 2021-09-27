@@ -36,33 +36,33 @@ export const state = () => ({
   core: {
     home: {
       href: '/',
-      icon: 'mdi-view-dashboard-outline',
-      title: 'Dashboard',
-      subtitle: 'List of reports from storage'
+      icon: 'mdi-home-outline',
+      title: 'Home',
+      subtitle: 'Home page'
     },
     docs: {
       href: '/docs',
-      icon: 'mdi-view-dashboard-outline',
-      title: 'Dashboard',
-      subtitle: 'List of reports from storage'
+      icon: 'mdi-information-outline',
+      title: 'Documents',
+      subtitle: 'Documents page'
     },
     contacts: {
       href: '/contacts',
-      icon: 'mdi-view-dashboard-outline',
-      title: 'Dashboard',
-      subtitle: 'List of reports from storage'
+      icon: 'mdi-shield-account-outline',
+      title: 'Contacts',
+      subtitle: 'Contacts page'
     },
     signin: {
-      href: '/board',
-      icon: 'mdi-view-dashboard-outline',
-      title: 'Dashboard',
-      subtitle: 'List of reports from storage'
+      href: '/auth/signin',
+      icon: 'mdi-login-variant',
+      title: 'Signin',
+      subtitle: 'Signin page'
     },
     signup: {
-      href: '/board',
-      icon: 'mdi-view-dashboard-outline',
-      title: 'Dashboard',
-      subtitle: 'List of reports from storage'
+      href: '/auth/signup',
+      icon: 'mdi-login-variant',
+      title: 'Signup',
+      subtitle: 'Signup page'
     },
 
     links: [
@@ -70,19 +70,19 @@ export const state = () => ({
         href: '/core/dashboard',
         icon: 'mdi-view-dashboard-outline',
         title: 'Dashboard',
-        subtitle: 'List of reports from storage'
+        subtitle: 'Dashboard of application'
       },
       {
         href: '/core/options',
         icon: 'mdi-cog-outline',
         title: 'Options',
-        subtitle: 'Scan service'
+        subtitle: 'Options of application'
       },
       {
         href: '/core/users',
         icon: 'mdi-account-supervisor-outline',
         title: 'Users',
-        subtitle: 'Allow notifications'
+        subtitle: 'List of users from storage'
       }
     ]
   },
@@ -104,7 +104,7 @@ export const state = () => ({
         href: '/app/ping-icmp',
         icon: 'mdi-lan-pending',
         title: 'ICMP Ping',
-        subtitle: 'Allow notifications'
+        subtitle: 'ICMP Ping service'
       },
       {
         href: '/app/reports',

@@ -16,45 +16,45 @@
     </template>
 
     <v-list flat>
-      <v-list-item link to="/" class="mb-2">
+      <v-list-item link :to="core.home.href" class="mb-2">
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item-icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-home-outline</v-icon>
+              <v-icon> {{ core.home.icon }} </v-icon>
             </v-list-item-icon>
           </template>
-          <span>Home</span>
+          <span> {{ core.home.title }} </span>
         </v-tooltip>
         <v-list-item-content>
-          <v-list-item-title>Home</v-list-item-title>
+          <v-list-item-title> {{ core.home.title }} </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link class="mb-2" to="/docs">
+      <v-list-item link class="mb-2" :to="core.docs.href">
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item-icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-information-outline</v-icon>
+              <v-icon> {{ core.docs.icon }} </v-icon>
             </v-list-item-icon>
           </template>
-          <span>Help</span>
+          <span> {{ core.docs.title }} </span>
         </v-tooltip>
         <v-list-item-content>
-          <v-list-item-title>Help</v-list-item-title>
+          <v-list-item-title> {{ core.docs.title }} </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item link to="/contacts" class="my-2">
+      <v-list-item link :to="core.contacts.href" class="my-2">
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item-icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-shield-account-outline</v-icon>
+              <v-icon> {{ core.contacts.icon }} </v-icon>
             </v-list-item-icon>
           </template>
-          <span>Contacts</span>
+          <span> {{ core.contacts.title }} </span>
         </v-tooltip>
         <v-list-item-content>
-          <v-list-item-title>Contacts</v-list-item-title>
+          <v-list-item-title> {{ core.contacts.title }} </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -74,13 +74,13 @@
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>{{ item.icon }}</v-icon>
+                <v-icon> {{ item.icon }} </v-icon>
               </v-list-item-icon>
             </template>
-            <span>{{ item.title }}</span>
+            <span> {{ item.title }} </span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title> {{ item.title }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -99,7 +99,7 @@
                   {{ locale.code.toUpperCase() }}
                 </v-list-item-title>
               </template>
-              <span>{{ locale.name }}</span>
+              <span> {{ locale.name }} </span>
             </v-tooltip>
           </v-list-item>
         </v-list>
@@ -109,10 +109,10 @@
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-translate</v-icon>
+                <v-icon> mdi-translate </v-icon>
               </v-list-item-icon>
             </template>
-            <span>Translations</span>
+            <span> Translations </span>
           </v-tooltip>
           <v-list-item-content>
             <v-list-item-title> Translations </v-list-item-title>
@@ -123,29 +123,29 @@
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-theme-light-dark</v-icon>
+                <v-icon> mdi-theme-light-dark </v-icon>
               </v-list-item-icon>
             </template>
-            <span>Theme toggle</span>
+            <span> Theme toggle </span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>Theme toggle</v-list-item-title>
+            <v-list-item-title> Theme toggle </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <v-divider class="mx-4" />
 
-        <v-list-item link to="/auth/signin" v-if="!$auth.loggedIn">
+        <v-list-item link :to="core.signin.href" v-if="!$auth.loggedIn">
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-login-variant</v-icon>
+                <v-icon> {{ core.signin.icon }} </v-icon>
               </v-list-item-icon>
             </template>
-            <span>Signin</span>
+            <span> {{ core.signin.title }} </span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>Signin</v-list-item-title>
+            <v-list-item-title> {{ core.signin.title }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -153,13 +153,13 @@
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-logout-variant</v-icon>
+                <v-icon> mdi-logout-variant </v-icon>
               </v-list-item-icon>
             </template>
-            <span>Signout</span>
+            <span> Signout </span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>Signout</v-list-item-title>
+            <v-list-item-title> Signout </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -189,6 +189,9 @@ export default {
       return this.$i18n.locales.filter(
         (locale) => locale.code !== this.$i18n.locale
       );
+    },
+    core() {
+      return this.$store.state.core;
     },
     socialLinks() {
       return this.$store.state.social;
