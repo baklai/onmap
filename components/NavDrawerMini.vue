@@ -1,10 +1,10 @@
 <template>
   <v-navigation-drawer
     mini-variant
-    :permanent="drawer"
-    v-model="drawer"
-    :absolute="absolute"
     :app="app"
+    :permanent="drawer"
+    :absolute="absolute"
+    v-model="drawer"
     class="pt-3"
   >
     <template v-slot:prepend>
@@ -14,6 +14,7 @@
         </v-avatar>
       </router-link>
     </template>
+
     <v-list flat>
       <v-list-item link to="/" class="mb-2">
         <v-tooltip right>
@@ -22,10 +23,10 @@
               <v-icon>mdi-home-outline</v-icon>
             </v-list-item-icon>
           </template>
-          <span>{{ $t('menu.home') }}</span>
+          <span>Home</span>
         </v-tooltip>
         <v-list-item-content>
-          <v-list-item-title>{{ $t('menu.home') }}</v-list-item-title>
+          <v-list-item-title>Home</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -47,17 +48,19 @@
         <v-tooltip right>
           <template v-slot:activator="{ on, attrs }">
             <v-list-item-icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-account-circle-outline</v-icon>
+              <v-icon>mdi-shield-account-outline</v-icon>
             </v-list-item-icon>
           </template>
-          <span>{{ $t('menu.contacts') }}</span>
+          <span>Contacts</span>
         </v-tooltip>
         <v-list-item-content>
-          <v-list-item-title>{{ $t('menu.contacts') }}</v-list-item-title>
+          <v-list-item-title>Contacts</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
+
     <v-spacer />
+
     <template v-slot:append>
       <v-list flat dense>
         <v-list-item
@@ -96,7 +99,7 @@
                   {{ locale.code.toUpperCase() }}
                 </v-list-item-title>
               </template>
-              <span>{{ $t(`locale.${locale.name}`) }}</span>
+              <span>{{ locale.name }}</span>
             </v-tooltip>
           </v-list-item>
         </v-list>
@@ -109,12 +112,10 @@
                 <v-icon>mdi-translate</v-icon>
               </v-list-item-icon>
             </template>
-            <span>{{ $t('menu.translations') }}</span>
+            <span>Translations</span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>
-              {{ $t('menu.translations') }}
-            </v-list-item-title>
+            <v-list-item-title> Translations </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -125,10 +126,10 @@
                 <v-icon>mdi-theme-light-dark</v-icon>
               </v-list-item-icon>
             </template>
-            <span>{{ $t('menu.theme') }}</span>
+            <span>Theme toggle</span>
           </v-tooltip>
           <v-list-item-content>
-            <v-list-item-title>{{ $t('menu.theme') }}</v-list-item-title>
+            <v-list-item-title>Theme toggle</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -176,10 +177,6 @@ export default {
     absolute: {
       type: Boolean,
       default: true
-    },
-    drawer: {
-      type: Boolean,
-      default: null
     }
   },
   data() {
@@ -195,6 +192,14 @@ export default {
     },
     socialLinks() {
       return this.$store.state.social;
+    },
+    drawer: {
+      get() {
+        return this.$store.state.sidebar;
+      },
+      set(val) {
+        this.$store.commit('sidebar', val);
+      }
     }
   },
   methods: {
@@ -203,21 +208,20 @@ export default {
       localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());
     },
 
-    toggleLang: function (code) {
+    async toggleLang(code) {
       this.langs = false;
-      this.$i18n.setLocale(code);
-      localStorage.setItem('lang.code', code);
+      await this.$i18n.setLocale(code);
     },
 
     async Logout() {
       this.$toast.success('Logout successfully completed!');
       await this.$auth.logout('local');
     }
+  },
+  watch: {
+    drawer(value) {
+      return value;
+    }
   }
-  // watch: {
-  //   drawer(value) {
-  //     return value;
-  //   }
-  // }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app v-model="drawer" :mini-variant="false" width="360">
-    <NavDrawerMini :app="false" :absolute="true" :drawer="drawer" />
+    <NavDrawerMini :app="false" :absolute="true" />
 
     <template v-slot:prepend>
       <v-sheet height="128" width="100%">
@@ -70,10 +70,6 @@ export default {
       type: Boolean,
       default: true
     },
-    drawer: {
-      type: Boolean,
-      default: null
-    },
     subheader: {
       type: String,
       default: 'Application'
@@ -93,13 +89,15 @@ export default {
   computed: {
     coreLinks() {
       return this.$store.state.core.links;
+    },
+    drawer: {
+      get() {
+        return this.$store.state.sidebar;
+      },
+      set(val) {
+        this.$store.commit('sidebar', val);
+      }
     }
-  },
-  methods: {
-    // watch: {
-    //   drawer(value) {
-    //     return value;
-    //   }}
   }
 };
 </script>

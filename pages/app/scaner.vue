@@ -1,38 +1,5 @@
 <template>
   <v-container>
-    <v-sheet width="100%">
-      <v-list three-line>
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-icon large> mdi-lan </v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title class="body-1 text-uppercase font-weight-bold">
-              Scan service
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              Service for checking the integrity and quality of connections in
-              networks based on TCP/IP.
-            </v-list-item-subtitle>
-          </v-list-item-content>
-
-          <v-list-item-action>
-            <v-btn
-              icon
-              fab
-              small
-              class="mx-2"
-              @click.stop="rightDrawer = !rightDrawer"
-            >
-              <v-icon>
-                mdi-{{ `chevron-${rightDrawer ? 'right' : 'left'}` }}
-              </v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list>
-    </v-sheet>
-
     <v-list>
       <v-list-item>
         <v-list-item-content>

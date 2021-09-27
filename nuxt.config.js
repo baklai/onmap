@@ -77,7 +77,6 @@ export default {
 
   plugins: [
     { src: '~/plugins/theme', mode: 'client' },
-    { src: '~/plugins/language', mode: 'client' },
     { src: '~/plugins/clipboard', mode: 'client' }
   ],
 
@@ -181,7 +180,7 @@ export default {
   content: {},
 
   i18n: {
-    lazy: false,
+    lazy: true,
     langDir: 'lang/',
     strategy: 'no_prefix',
     locales: [
@@ -195,17 +194,21 @@ export default {
         code: 'ru',
         iso: 'ru-RU',
         file: 'ru-RU.js',
-        name: 'Russia'
+        name: 'Русский'
       },
       {
         code: 'ua',
         iso: 'ua-UA',
         file: 'ua-UA.js',
-        name: 'Ukraine'
+        name: 'Українська'
       }
     ],
     defaultLocale: 'en',
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'lang',
+      redirectOn: 'root'
+    },
     vueI18n: {
       fallbackLocale: 'en'
     }

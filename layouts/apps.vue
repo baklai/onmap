@@ -1,12 +1,11 @@
 <template>
   <v-app v-if="$nuxt.$loading">
     <NavDrawerApp
-      :drawer="drawer"
       :links="appLinks"
       :subheader="'Application'"
       :currentPage="currentPage"
     />
-    <NavBarApp :drawer="drawer" />
+    <NavBarApp />
     <v-main>
       <nuxt />
     </v-main>
@@ -16,9 +15,7 @@
 <script>
 export default {
   data() {
-    return {
-      drawer: null
-    };
+    return {};
   },
   computed: {
     appLinks() {

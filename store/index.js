@@ -1,6 +1,8 @@
 import { config } from '@/package.json';
 
 export const state = () => ({
+  sidebar: null,
+
   author: {
     name: config.author.name,
     email: config.author.email,
@@ -94,8 +96,9 @@ export const state = () => ({
       {
         href: '/app/scaner',
         icon: 'mdi-lan',
-        title: 'Scaner',
-        subtitle: 'Scan service'
+        title: 'Scan service',
+        subtitle:
+          'Service for checking the integrity and quality of connections in networks based on TCP/IP. '
       },
       {
         href: '/app/ping-icmp',
@@ -118,5 +121,11 @@ export const getters = {
     return `Copyright © ${new Date().getFullYear()} ${
       state.author.name
     }. All rights reserved.`;
+  }
+};
+
+export const mutations = {
+  sidebar(state, val) {
+    state.sidebar = val;
   }
 };

@@ -1,21 +1,64 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="6">
-        <v-card max-width="600" class="mx-auto">
-          <v-toolbar>
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
+    <v-card>
+      <v-data-table
+        :headers="headers"
+        :items="users"
+        :search="search"
+        :items-per-page="10"
+        :footer-props="{
+          itemsPerPageOptions: [5, 10, 15, -1],
+          itemsPerPageText: 'Rows per users:',
 
-            <v-toolbar-title>List of users</v-toolbar-title>
+          showFirstLastPage: true,
+          showCurrentPage: true
+        }"
+        loading-text="Loading... Please wait"
+        no-data-text="No data available"
+        class="elevation-1"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-icon large left> mdi-account-supervisor-outline </v-icon>
+
+            <v-toolbar-title> List of users </v-toolbar-title>
 
             <v-spacer></v-spacer>
+
+            <v-responsive max-width="260" class="mr-2">
+              <v-text-field
+                flat
+                dense
+                rounded
+                clearable
+                hide-details
+                solo-inverted
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+                label="Search in users"
+                class="ma-0"
+              ></v-text-field>
+            </v-responsive>
 
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  fab
                   icon
-                  small
+                  v-on="on"
+                  v-bind="attrs"
+                  @click="dialog = !dialog"
+                  class="mx-2"
+                >
+                  <v-icon> mdi-account-plus-outline </v-icon>
+                </v-btn>
+              </template>
+              <span> Create account </span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
                   v-on="on"
                   v-bind="attrs"
                   @click="getUsers"
@@ -27,241 +70,285 @@
               <span> Update list </span>
             </v-tooltip>
 
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  fab
-                  icon
-                  small
-                  v-on="on"
-                  v-bind="attrs"
-                  @click="getUsers"
-                  class="mx-2"
-                >
-                  <v-icon large> mdi-plus-circle-outline </v-icon>
-                </v-btn>
-              </template>
-              <span> Create User </span>
-            </v-tooltip>
+            <v-dialog v-model="dialog" max-width="600px">
+              <v-card>
+                <v-card-title>
+                  <v-icon large left> mdi-account-circle-outline </v-icon>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.name"
+                          label="User name"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.email"
+                          label="User email"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.login"
+                          label="User login"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.role"
+                          label="User role"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-switch
+                          flat
+                          inset
+                          dense
+                          label="Activated account"
+                          color="success"
+                          v-model="editedItem.isActive"
+                        ></v-switch>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-switch
+                          flat
+                          inset
+                          dense
+                          label="Admin account"
+                          color="success"
+                          v-model="editedItem.isAdmin"
+                        ></v-switch>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="close"> Cancel </v-btn>
+                  <v-btn text @click="save"> Save </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialogDelete" max-width="300px">
+              <v-card>
+                <v-card-title>
+                  Are you sure you want to delete this item?
+                </v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="closeDelete"> Cancel </v-btn>
+                  <v-btn text @click="deleteItemConfirm"> OK </v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-toolbar>
+        </template>
 
-          <v-list subheader three-line>
-            <v-subheader>User Controls</v-subheader>
+        <template v-slot:[`item.name`]="{ item }">
+          <v-icon left> mdi-account-circle-outline </v-icon>
+          <span>{{ item.name }}</span>
+        </template>
 
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Content filtering</v-list-item-title>
-                <v-list-item-subtitle
-                  >Set the content filtering level to restrict appts that can be
-                  downloaded</v-list-item-subtitle
-                >
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+        <template v-slot:[`item.email`]="{ item }">
+          <v-icon left> mdi-email-outline </v-icon>
+          <span>{{ item.email }}</span>
+        </template>
 
-          <v-divider></v-divider>
+        <template v-slot:[`item.login`]="{ item }">
+          <v-icon left> mdi-account-outline </v-icon>
+          <span>{{ item.login }}</span>
+        </template>
 
-          <v-list dense subheader three-line class="list-users">
-            <v-list-item v-for="item in users" :key="item._id">
-              <v-list-item-avatar>
-                <v-icon class="grey lighten-1" dark>
-                  mdi-account-outline
-                </v-icon>
-              </v-list-item-avatar>
+        <template v-slot:[`item.isActive`]="{ item }">
+          <v-switch
+            flat
+            inset
+            dense
+            disabled
+            color="success"
+            v-model="item.isActive"
+          ></v-switch>
+        </template>
 
-              <v-list-item-content>
-                <v-list-item-title>
-                  <strong>
-                    {{ item.login }}
-                  </strong>
+        <template v-slot:[`item.isAdmin`]="{ item }">
+          <v-switch
+            flat
+            inset
+            dense
+            disabled
+            color="success"
+            v-model="item.isAdmin"
+          ></v-switch>
+        </template>
 
-                  <v-chip
-                    x-small
-                    class="mx-1"
-                    :color="item.isActive ? 'success' : ''"
-                  >
-                    {{ item.isActive ? 'Active' : 'Disabled' }}
-                  </v-chip>
-
-                  <v-chip
-                    x-small
-                    class="mx-1"
-                    :color="item.isAdmin ? 'primary' : ''"
-                  >
-                    {{ item.isAdmin ? 'Admin' : 'not admin' }}
-                  </v-chip>
-                </v-list-item-title>
-
-                <v-list-item-subtitle>
-                  Name: {{ item.name }} <br />
-                  E-mail: {{ item.email }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-
-              <v-list-item-action>
-                <v-list-item-action-text>
-                  {{ item.created }}
-                </v-list-item-action-text>
-                <v-btn icon>
-                  <v-icon color="grey lighten-1">mdi-information</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-
-      <v-col cols="6">
-        <v-card max-width="600" class="mx-auto">
-          <v-card-title>
-            <span class="text-h5">User Profile</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Legal first name*"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Legal middle name"
-                    hint="example of helper text only on focus"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Legal last name*"
-                    hint="example of persistent helper text"
-                    persistent-hint
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field label="Email*" required></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Password*"
-                    type="password"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-select
-                    :items="['0-17', '18-29', '30-54', '54+']"
-                    label="Age*"
-                    required
-                  ></v-select>
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-autocomplete
-                    :items="[
-                      'Skiing',
-                      'Ice hockey',
-                      'Soccer',
-                      'Basketball',
-                      'Hockey',
-                      'Reading',
-                      'Writing',
-                      'Coding',
-                      'Basejump'
-                    ]"
-                    label="Interests"
-                    multiple
-                  ></v-autocomplete>
-                </v-col>
-              </v-row>
-            </v-container>
-            <small>*indicates required field</small>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false">
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            icon
+            small
+            class="mr-2"
+            color="green lighten-1"
+            @click="editItem(item)"
+          >
+            <v-icon small>mdi-eye-outline</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            small
+            class="mr-2"
+            color="blue lighten-1"
+            @click="editItem(item)"
+          >
+            <v-icon small> mdi-pencil </v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            small
+            class="mr-2"
+            color="red lighten-1"
+            @click="deleteItem(item)"
+          >
+            <v-icon small> mdi-trash-can-outline </v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 export default {
   middleware: ['auth'],
-
   layout: 'apps',
 
   async asyncData({ $axios }) {
     const { data: users } = await $axios.get('users', {});
-
     return { users };
   },
 
   data() {
-    return {};
+    return {
+      search: null,
+      dialog: false,
+      dialogDelete: false,
+
+      // created: "2021-09-27T08:00:21.221Z"
+      // ​​email: "root@onmap.localhost"
+      // ​​id: "61517a1512001d39edc33fd0"
+      // ​​isActive: true
+      // ​​isAdmin: true
+      // ​​login: "root"
+      // ​​name: "root"
+      // ​​role: "admin"
+      // ​​updated: "2021-09-27T08:00:21.221Z"
+
+      headers: [
+        {
+          text: 'Name',
+          align: 'start',
+          value: 'name',
+          sortable: true
+        },
+        {
+          text: 'Email',
+          align: 'start',
+          value: 'email',
+          sortable: false
+        },
+        { text: 'Login', value: 'login', sortable: false },
+        { text: 'Role', value: 'role', sortable: true },
+        { text: 'Active', value: 'isActive', sortable: false },
+        { text: 'Admin', value: 'isAdmin', sortable: false },
+        { text: '', value: 'actions', align: 'center', sortable: false }
+      ],
+      editedIndex: -1,
+      editedItem: {
+        name: '',
+        email: '',
+        login: '',
+        role: '',
+        isActive: false,
+        isAdmin: false
+      },
+      defaultItem: {
+        name: '',
+        email: '',
+        login: '',
+        role: '',
+        isActive: false,
+        isAdmin: false
+      }
+    };
+  },
+
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? 'New account' : 'Edit account';
+    }
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    }
   },
 
   methods: {
     async getUsers() {
       const { data: users } = await this.$axios.get('users', {});
-
       this.users = users;
     },
+
     editItem(item) {
-      // this.editedIndex = this.items.indexOf(item);
-      // this.editedItem = Object.assign({}, item);
-      // this.dialog = true;
+      this.editedIndex = this.users.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
     },
 
     deleteItem(item) {
-      // this.editedIndex = this.items.indexOf(item);
-      // this.editedItem = Object.assign({}, item);
-      // this.dialogDelete = true;
+      this.editedIndex = this.users.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      // this.items.splice(this.editedIndex, 1);
-      // this.closeDelete();
+      this.users.splice(this.editedIndex, 1);
+      this.closeDelete();
     },
 
     close() {
-      // this.dialog = false;
-      // this.$nextTick(() => {
-      //   this.editedItem = Object.assign({}, this.defaultItem);
-      //   this.editedIndex = -1;
-      // });
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
 
     closeDelete() {
-      // this.dialogDelete = false;
-      // this.$nextTick(() => {
-      //   this.editedItem = Object.assign({}, this.defaultItem);
-      //   this.editedIndex = -1;
-      // });
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
 
     save() {
-      // if (this.editedIndex > -1) {
-      //   Object.assign(this.items[this.editedIndex], this.editedItem);
-      // } else {
-      //   this.items.push(this.editedItem);
-      // }
-      // this.close();
+      if (this.editedIndex > -1) {
+        Object.assign(this.users[this.editedIndex], this.editedItem);
+      } else {
+        this.users.push(this.editedItem);
+      }
+      this.close();
     }
   }
 };
 </script>
-
-<style scoped>
-.v-list.list-users {
-  height: 360px;
-  overflow-y: auto;
-}
-</style>
