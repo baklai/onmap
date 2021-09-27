@@ -1,7 +1,7 @@
 <template>
-  <v-container fill-height fluid>
+  <v-container fill-height fluid class="d-flex justify-start mb-6">
     <v-row align="center" justify="center">
-      <v-col cols="12" xl="4" lg="4" md="5" sm="8" xs="8" align="center">
+      <v-col cols="12" xl="4" lg="6" md="5" sm="8" xs="8" align="center">
         <AppDefault />
       </v-col>
     </v-row>
@@ -15,11 +15,6 @@ export default {
   },
   data() {
     return {};
-  },
-  computed: {
-    page() {
-      return this.$route.name;
-    }
   }
 };
 </script>

@@ -23,14 +23,9 @@
     </template>
 
     <v-list subheader two-line flat class="pl-14">
-      <v-subheader>Application</v-subheader>
+      <v-subheader>{{ subheader }}</v-subheader>
       <v-list-item-group>
-        <v-list-item
-          link
-          v-for="(item, i) in appLinks"
-          :key="i"
-          :to="item.href"
-        >
+        <v-list-item link v-for="(item, i) in links" :key="i" :to="item.href">
           <v-list-item-avatar>
             <v-icon> {{ item.icon }} </v-icon>
           </v-list-item-avatar>
@@ -43,11 +38,11 @@
     </v-list>
 
     <v-list subheader two-line flat class="pl-14">
-      <v-subheader>Administrations</v-subheader>
+      <v-subheader>Administration</v-subheader>
       <v-list-item-group>
         <v-list-item
           link
-          v-for="(item, i) in boardLinks"
+          v-for="(item, i) in coreLinks"
           :key="i"
           :to="item.href"
         >
@@ -78,31 +73,26 @@ export default {
     drawer: {
       type: Boolean,
       default: null
+    },
+    subheader: {
+      type: String,
+      default: 'Application'
+    },
+    links: {
+      type: Array,
+      default: []
+    },
+    currentPage: {
+      type: Object,
+      default: null
     }
   },
   data() {
     return {};
   },
   computed: {
-    appLinks() {
-      return this.$store.state.app.links;
-    },
-    boardLinks() {
+    coreLinks() {
       return this.$store.state.core.links;
-    },
-    currentPage() {
-      const links = [
-        ...this.$store.state.app.links,
-        ...this.$store.state.core.links
-      ];
-      const filter = links.find((item) => item.href === this.$route.fullPath);
-      return filter
-        ? filter
-        : {
-            icon: 'mdi-apps',
-            title: this.$store.state.app.short_name,
-            subtitle: this.$store.state.app.description
-          };
     }
   },
   methods: {

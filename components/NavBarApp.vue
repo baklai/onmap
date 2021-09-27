@@ -1,6 +1,7 @@
 <template>
   <v-app-bar app clipped-right flat height="72">
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-toolbar-title>{{ appName }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-responsive max-width="156">
@@ -25,6 +26,11 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    appName() {
+      return this.$store.state.app.name;
+    }
   }
   // watch: {
   //   drawer(value) {

@@ -1,69 +1,48 @@
 <template>
   <v-app>
-    <NavDrawerApp :drawer="drawer" />
+    <NavDrawerApp
+      :drawer="drawer"
+      :links="docLinks"
+      :subheader="'Documentation'"
+      :currentPage="currentPage"
+    />
     <NavBarApp :drawer="drawer" />
     <v-main>
-      <v-container>
-        <v-sheet min-height="70vh" rounded="lg" class="ma-3 elevation-1">
-          <article v-if="article" class="pa-10">
-            <h1>{{ article.title | formatTitle }}</h1>
-            <br />
-            <nuxt-content :document="article" />
-            <p>
-              <strong>Article last updated:</strong>
-              {{ article.updatedAt | formatDate }}
-            </p>
-          </article>
-        </v-sheet>
-      </v-container>
+      <nuxt />
     </v-main>
   </v-app>
 </template>
 
 <script>
 export default {
-  head() {
-    return {
-      title: this.article ? this.article.title : 'Help'
-    };
-  },
   async fetch() {
     const articles = await this.$content().sortBy('title').fetch();
     articles.forEach((item) => {
-      this.subPages.push({
+      this.docLinks.push({
         href: `/docs/${item.slug}`,
         icon: 'mdi-file-document-outline',
         title: item.title,
         subtitle: item.description
       });
     });
-
-    try {
-      this.article = await this.$content('options').fetch();
-    } catch (err) {
-      this.article = null;
-    }
   },
-
   data() {
     return {
       drawer: null,
-      article: null,
-      subPages: []
+      docLinks: []
     };
   },
-  filters: {
-    formatTitle(value) {
-      return value.toUpperCase();
-    },
-    formatDate(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(date).toLocaleDateString('en', options);
-    }
-  },
-  methods: {
-    async getArticle(slug) {
-      this.article = await this.$content(slug).fetch();
+  computed: {
+    currentPage() {
+      const links = [...this.docLinks, ...this.$store.state.core.links];
+      const filter = links.find((item) => item.href === this.$route.fullPath);
+      return filter
+        ? filter
+        : {
+            icon: 'mdi-information-outline',
+            title: this.$store.state.app.short_name,
+            subtitle: this.$store.state.app.description
+          };
     }
   }
 };
