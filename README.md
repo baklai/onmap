@@ -20,14 +20,22 @@ git clone {repository URL}
 $ npm install
 ```
 
-## Config key
+## Create env config key
 
+```bash
+# API_URI key
 API_URI
+# APP_HOST key
 APP_HOST
+# MONGO_URI key
 MONGO_URI
+# BCRYPT_SALT key
 BCRYPT_SALT
+# TOKEN_EXPIRES_IN key
 TOKEN_EXPIRES_IN
+# JWT_SECRET_KEY key
 JWT_SECRET_KEY
+```
 
 ## Run dev application
 
