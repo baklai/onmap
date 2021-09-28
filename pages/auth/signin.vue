@@ -5,7 +5,7 @@
         <v-card-text>
           <app-logo />
           <h1 class="blue-grey--text text--darken-1 text-center ml-4">
-            Online Network Mapper
+            {{ appName }}
           </h1>
           <p class="text-center caption ml-4 mt-4">
             Please enter your login and password to <br />
@@ -13,9 +13,8 @@
           </p>
           <v-form
             ref="signinForm"
-            v-model="valid"
             lazy-validation
-            @submit.prevent="onSubmit"
+            @submit.prevent="onSignin"
             class="ml-5 mr-5"
           >
             <v-text-field
@@ -28,9 +27,8 @@
               color="blue darken-1"
               class="mt-6 mb-6"
               v-model.trim="login"
-              :rules="loginRules"
-              @keypress.enter="onSubmit"
-              v-disabled-icon-focus
+              :rules="rules.login"
+              @keypress.enter="onSignin"
             />
             <v-text-field
               required
@@ -43,15 +41,14 @@
               class="mt-6 mb-6"
               :counter="21"
               v-model.trim="password"
-              :rules="passwordRules"
+              :rules="rules.password"
               @click:append="showeye = !showeye"
-              v-disabled-icon-focus
-              @keypress.enter="onSubmit"
+              @keypress.enter="onSignin"
             />
           </v-form>
         </v-card-text>
         <div class="text-center mt-3">
-          <v-btn @click="onSubmit" dark rounded color="#546e7a">
+          <v-btn @click="onSignin" dark rounded color="#546e7a">
             SIGN IN
           </v-btn>
         </div>
@@ -64,30 +61,29 @@
 export default {
   data() {
     return {
-      showeye: false,
-      valid: false,
       login: '',
       password: '',
-      loginRules: [(v) => !!v || 'Login is required'],
-      passwordRules: [
-        (v) => !!v || 'Password is required',
-        (v) =>
-          (v && v.length >= 4 && v.length <= 21) ||
-          'Password must be equal or more than 6 characters'
-      ]
+      rules: {
+        login: [(v) => !!v || 'Login is required'],
+        password: [
+          (v) => !!v || 'Password is required',
+          (v) =>
+            (v && v.length >= 4 && v.length <= 21) ||
+            'Password must be equal or more than 4 characters'
+        ]
+      },
+      showeye: false
     };
   },
-  directives: {
-    disabledIconFocus: {
-      bind(element) {
-        element
-          .querySelectorAll('.v-input__icon button')
-          .forEach((item) => item.setAttribute('tabindex', -1));
-      }
+
+  computed: {
+    appName() {
+      return this.$store.state.app.name;
     }
   },
+
   methods: {
-    async onSubmit() {
+    async onSignin() {
       if (this.$refs.signinForm.validate()) {
         try {
           const user = {
@@ -107,20 +103,3 @@ export default {
   }
 };
 </script>
-
-<style>
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  border: none;
-  box-shadow: transparent;
-  -webkit-text-fill-color: #0077ff;
-  transition: background-color 5000s ease-in-out 0s;
-}
-</style>

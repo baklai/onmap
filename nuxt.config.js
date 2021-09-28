@@ -219,7 +219,7 @@ export default {
     theme: 'toasted-primary',
     position: 'bottom-right',
     icon: 'alert-circle-outline',
-    duration: 1000,
+    duration: 3000,
     iconPack: 'mdi',
     register: [
       {
@@ -227,7 +227,7 @@ export default {
         message: 'Oops... Something went wrong',
         options: {
           type: 'error',
-          duration: 2000
+          duration: 5000
         }
       }
     ]

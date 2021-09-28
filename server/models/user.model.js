@@ -5,7 +5,7 @@ const userSchema = new Schema({
   login: {
     type: String,
     unique: true,
-    required: true,
+    required: 'Login is required',
     trim: true
   },
   password: {
@@ -15,13 +15,18 @@ const userSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
+    required: 'User name is required'
   },
   email: {
     type: String,
     unique: true,
-    required: true,
-    trim: true
+    required: 'Email address is required',
+    lowercase: true,
+    trim: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      'Please fill a valid email address'
+    ]
   },
   isActive: { type: Boolean, required: true, default: false },
   isAdmin: {
@@ -33,7 +38,7 @@ const userSchema = new Schema({
     type: String,
     enum: ['anonymous', 'user', 'moderator', 'admin'],
     default: 'anonymous',
-    required: true
+    required: 'User role is required'
   }
 });
 

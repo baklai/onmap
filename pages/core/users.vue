@@ -12,6 +12,7 @@
           showFirstLastPage: true,
           showCurrentPage: true
         }"
+        :loading="false"
         loading-text="Loading... Please wait"
         no-data-text="No data available"
         class="elevation-1"
@@ -67,63 +68,110 @@
               <span> Update list </span>
             </v-tooltip>
 
-            <v-dialog v-model="dialog" max-width="600px">
+            <v-dialog v-model="dialog" persistent scrollable max-width="600px">
               <v-card>
                 <v-card-title>
                   <v-icon large left> mdi-account-circle-outline </v-icon>
-                  <span class="text-h5"> {{ formTitle }} </span>
+                  <span class="text-h5"> {{ modalFormTitle }} </span>
+                  <v-spacer />
+                  <v-btn icon @click="close">
+                    <v-icon> mdi-close </v-icon>
+                  </v-btn>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.name"
-                          label="User name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.email"
-                          label="User email"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.login"
-                          label="User login"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.role"
-                          label="User role"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-switch
-                          flat
-                          inset
-                          dense
-                          label="Activated account"
-                          color="success"
-                          v-model="editedItem.isActive"
-                        ></v-switch>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-switch
-                          flat
-                          inset
-                          dense
-                          label="Admin account"
-                          color="success"
-                          v-model="editedItem.isAdmin"
-                        ></v-switch>
-                      </v-col>
-                    </v-row>
+                    <v-form
+                      ref="dialogForm"
+                      lazy-validation
+                      @submit.prevent="save()"
+                    >
+                      <v-row>
+                        <v-col cols="12" md="6">
+                          <v-text-field
+                            required
+                            clearable
+                            type="text"
+                            label="User name"
+                            :rules="rules.name"
+                            v-model.trim="editedItem.name"
+                            prepend-icon="mdi-account-circle-outline"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-text-field
+                            required
+                            clearable
+                            type="email"
+                            label="User email"
+                            :rules="rules.email"
+                            v-model.trim="editedItem.email"
+                            prepend-icon="mdi-email-outline"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-text-field
+                            required
+                            clearable
+                            type="text"
+                            label="User login"
+                            :rules="rules.login"
+                            v-model.trim="editedItem.login"
+                            prepend-icon="mdi-account-circle-outline"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-text-field
+                            required
+                            clearable
+                            label="User password"
+                            prepend-icon="mdi-lock-outline"
+                            :type="showeye ? 'text' : 'password'"
+                            :rules="rules.password"
+                            v-model.trim="editedItem.password"
+                            :counter="21"
+                            :append-icon="
+                              showeye
+                                ? 'mdi-eye-outline'
+                                : 'mdi-eye-off-outline'
+                            "
+                            @click:append="showeye = !showeye"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-switch
+                            flat
+                            inset
+                            dense
+                            color="success"
+                            label="Activated account"
+                            v-model="editedItem.isActive"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                          <v-select
+                            dense
+                            required
+                            label="User role"
+                            :rules="rules.role"
+                            v-model="editedItem.role"
+                            prepend-icon="mdi-account-key-outline"
+                            :items="['anonymous', 'user', 'moderator', 'admin']"
+                          />
+                        </v-col>
+                        <v-col cols="12" md="12">
+                          <v-switch
+                            flat
+                            inset
+                            dense
+                            color="success"
+                            label="Admin account"
+                            v-model="editedItem.isAdmin"
+                          />
+                        </v-col>
+                      </v-row>
+                    </v-form>
                   </v-container>
                 </v-card-text>
-
                 <v-card-actions>
                   <v-spacer />
                   <v-btn text @click="close"> Cancel </v-btn>
@@ -233,6 +281,7 @@ export default {
       search: null,
       dialog: false,
       dialogDelete: false,
+      showeye: false,
       headers: [
         {
           text: 'Name',
@@ -268,13 +317,33 @@ export default {
         role: '',
         isActive: false,
         isAdmin: false
+      },
+
+      rules: {
+        name: [(v) => !!v || 'User name is required'],
+        login: [(v) => !!v || 'User login is required'],
+        email: [
+          (v) => !!v || 'User email is required',
+          (v) =>
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+            'E-mail must be valid'
+        ],
+        password: [
+          (v) => !!v || 'Password is required',
+          (v) =>
+            (v && v.length >= 4 && v.length <= 21) ||
+            'Password must be equal or more than 4 characters'
+        ],
+        role: [(v) => !!v || 'User role is required']
       }
     };
   },
 
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? 'New account' : 'Edit account';
+    modalFormTitle() {
+      return this.editedIndex === -1
+        ? 'Create new account'
+        : 'Edit current account';
     }
   },
 
@@ -290,6 +359,7 @@ export default {
   methods: {
     async getUsers() {
       this.users = await this.$store.dispatch('api/getUsers');
+      this.$toast.success('Users list is updated!');
     },
 
     editItem(item) {
@@ -317,6 +387,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.$refs.dialogForm.reset();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -333,12 +404,19 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.users[this.editedIndex], this.editedItem);
+        //  Object.assign(this.users[this.editedIndex], this.editedItem);
+        if (this.$refs.dialogForm.validate()) {
+          await this.$store.dispatch('api/updateUsers', this.editedItem);
+          await this.getUsers();
+        }
       } else {
-        await this.$store.dispatch('api/createUsers', this.editedItem);
-        await this.getUsers();
+        if (this.$refs.dialogForm.validate()) {
+          await this.$store.dispatch('api/createUsers', this.editedItem);
+          await this.getUsers();
+        }
       }
-      this.close();
+      // this.$refs.dialogForm.reset();
+      //  this.close();
     }
   }
 };

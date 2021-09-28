@@ -34,7 +34,7 @@ const connectToMongoDB = async (MONGO_URI) => {
         login: 'root',
         password: 'root',
         name: 'root',
-        email: 'root@onmap.localhost',
+        email: 'root@onmap.io',
         isActive: true,
         isAdmin: true,
         role: 'admin'

@@ -4,20 +4,23 @@ html {
   height: 100%;
   overflow: hidden;
 }
+
 body {
   overflow: hidden;
   overflow-y: auto;
-}
-
-body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* font-size: 14px; */
+  font-size: 14px;
   color: #454545;
   font-weight: normal;
   font-style: normal;
 }
 
 * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
   scrollbar-width: none;
   scrollbar-color: #cccccc transparent;
 }
@@ -26,12 +29,31 @@ body {
   outline: none;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: none;
+  box-shadow: transparent;
+  -webkit-text-fill-color: #0077ff;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 div[data-app='true'] {
   background-image: url('/img/bg-app.png') !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   background-size: cover !important;
+}
+
+.toasted-container {
+  max-width: 400px;
 }
 
 /* .v-btn::before {

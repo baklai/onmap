@@ -42,17 +42,14 @@ app.use('/reports', reportRoutes);
 app.use((req, res, next) => {
   res
     .status(404)
-    .send({ message: 'Error 404 has occurred. Please try again later.' });
+    .json({ message: 'Error 404 has occurred. Please try again later.' });
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
   if (err.name === 'UnauthorizedError') {
     res.status(401).send({ message: 'The token is invalid.' });
   } else {
-    res
-      .status(500)
-      .send({ message: 'Error 500 has occurred. Please try again later.' });
+    res.status(500).json(err);
   }
 });
 
