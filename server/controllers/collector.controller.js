@@ -1,8 +1,8 @@
-const reportService = require('../services/report.service');
+const collectorService = require('../services/collector.service');
 
 const findAll = async (req, res, next) => {
   try {
-    const reports = await reportService.findAll();
+    const reports = await collectorService.findAll();
     res.status(200).json(reports);
   } catch (err) {
     next(err);
@@ -11,7 +11,7 @@ const findAll = async (req, res, next) => {
 
 const findOne = async (req, res, next) => {
   try {
-    const report = await reportService.findOne(req.params.id);
+    const report = await collectorService.findOne(req.params.id);
     if (report) {
       res.status(200).json(report);
     } else {
@@ -24,7 +24,12 @@ const findOne = async (req, res, next) => {
 
 const createOne = async (req, res, next) => {
   try {
-    const report = await reportService.createOne({ ...req.body });
+    const report = await collectorService.createOne({
+      host: req.body.host,
+      users: JSON.parse(req.body.users),
+      products: JSON.parse(req.body.products),
+      smbshare: JSON.parse(req.body.smbshare)
+    });
     res.status(200).json(report);
   } catch (err) {
     next(err);
@@ -33,7 +38,7 @@ const createOne = async (req, res, next) => {
 
 const updateOne = async (req, res, next) => {
   try {
-    const isUpdated = await reportService.updateOne({ ...req.body });
+    const isUpdated = await collectorService.updateOne({ ...req.body });
     if (isUpdated) {
       res.status(200).json({ ...req.body });
     } else {
@@ -46,7 +51,7 @@ const updateOne = async (req, res, next) => {
 
 const removeOne = async (req, res, next) => {
   try {
-    const report = await reportService.removeOne(req.params.id);
+    const report = await collectorService.removeOne(req.params.id);
     if (report) {
       res.sendStatus(204);
     } else {

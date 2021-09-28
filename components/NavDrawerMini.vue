@@ -119,7 +119,11 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link class="my-2" @click.prevent="toggleDarkMode">
+        <v-list-item
+          link
+          class="my-2"
+          @click.prevent="$store.commit('toggleDarkMode')"
+        >
           <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-list-item-icon v-bind="attrs" v-on="on">
@@ -206,11 +210,6 @@ export default {
     }
   },
   methods: {
-    toggleDarkMode: function () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem('theme.dark', this.$vuetify.theme.dark.toString());
-    },
-
     async toggleLang(code) {
       this.langs = false;
       await this.$i18n.setLocale(code);

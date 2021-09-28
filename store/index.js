@@ -96,11 +96,17 @@ export const state = () => ({
 
     links: [
       {
+        href: '/app/log-collector',
+        icon: 'mdi-skull-scan-outline',
+        title: 'Log Collector',
+        subtitle: 'Service for log collector.'
+      },
+      {
         href: '/app/scaner',
         icon: 'mdi-lan',
         title: 'Scan service',
         subtitle:
-          'Service for checking the integrity and quality of connections in networks based on TCP/IP. '
+          'Service for checking the integrity and quality of connections in networks based on TCP/IP.'
       },
       {
         href: '/app/ping-icmp',
@@ -133,9 +139,18 @@ export const mutations = {
     state.sidebar = val;
   },
 
+  toggleDarkMode(state) {
+    $nuxt.$root.$vuetify.theme.dark = !$nuxt.$root.$vuetify.theme.dark;
+    localStorage.setItem(
+      'theme.dark',
+      $nuxt.$root.$vuetify.theme.dark.toString()
+    );
+  },
+
   setError(state, error) {
     state.error = error;
   },
+
   clearError(state) {
     state.error = null;
   }

@@ -1,13 +1,11 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12">
-        <!-- <AppReport :report="report" /> -->
-      </v-col>
-    </v-row>
-
     <v-card>
       <v-data-table
+        item-key="id"
+        show-expand
+        single-expand
+        :expanded.sync="expanded"
         :headers="headers"
         :items="reports"
         :search="search"
@@ -25,7 +23,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat>
-            <v-icon large left> mdi-clipboard-list-outline </v-icon>
+            <v-icon large left> mdi-skull-scan-outline </v-icon>
             <v-toolbar-title> List of reports </v-toolbar-title>
             <v-spacer />
 
@@ -60,40 +58,39 @@
             </v-tooltip>
           </v-toolbar>
         </template>
-        <!--
-        <template v-slot:[`item.name`]="{ item }">
-          <v-icon left> mdi-account-circle-outline </v-icon>
-          <span> {{ item.name }} </span>
+
+        <template v-slot:[`item.host`]="{ item }">
+          <v-icon left> mdi-ip-network-outline </v-icon>
+          <span>
+            <strong> {{ item.host }} </strong>
+          </span>
         </template>
 
-        <template v-slot:[`item.email`]="{ item }">
-          <v-icon left> mdi-email-outline </v-icon>
-          <span> {{ item.email }} </span>
-        </template>
-
-        <template v-slot:[`item.login`]="{ item }">
-          <v-icon left> mdi-account-outline </v-icon>
-          <span> {{ item.login }} </span>
-        </template> -->
-
-        <!-- <template v-slot:[`item.role`]="{ item }">
-          <v-chip
-            outlined
-            small
-            :color="item.role === 'admin' ? 'success' : 'default'"
-          >
-            {{ item.role }}
+        <template v-slot:[`item.users`]="{ item }">
+          <v-chip outlined small color="success">
+            {{ item.users.length }}
           </v-chip>
-        </template> -->
+        </template>
 
-        <!--
+        <template v-slot:[`item.products`]="{ item }">
+          <v-chip outlined small color="success">
+            {{ item.products.length }}
+          </v-chip>
+        </template>
+
+        <template v-slot:[`item.smbshare`]="{ item }">
+          <v-chip outlined small color="success">
+            {{ item.smbshare.length }}
+          </v-chip>
+        </template>
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             icon
             small
             class="mr-2"
             color="green lighten-1"
-            @click="editItem(item.id)"
+            @click="showReport(item.id)"
           >
             <v-icon small> mdi-eye-outline </v-icon>
           </v-btn>
@@ -102,20 +99,77 @@
             small
             class="mr-2"
             color="blue lighten-1"
-            @click="editItem(item.id)"
+            @click="saveReport(item.id)"
           >
-            <v-icon small> mdi-pencil </v-icon>
+            <v-icon small> mdi-content-save-outline </v-icon>
           </v-btn>
           <v-btn
             icon
             small
             class="mr-2"
             color="red lighten-1"
-            @click="deleteItem(item.id)"
+            @click="deleteReport(item.id)"
           >
             <v-icon small> mdi-trash-can-outline </v-icon>
           </v-btn>
-        </template> -->
+        </template>
+
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length" style="max-height: 50px">
+            <p>HOST IP - {{ item.host }}</p>
+            <table border="1" class="mt-4">
+              <caption>
+                <strong>Локальные пользователи</strong>
+              </caption>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>SID</th>
+                <th>Enabled</th>
+              </tr>
+              <tr v-for="user in item.users" :key="user.name">
+                <td>{{ user.Name }}</td>
+                <td>{{ user.Description }}</td>
+                <td>{{ user.SID.Value }}</td>
+                <td>{{ user.Enabled }}</td>
+              </tr>
+            </table>
+            <table border="1" class="mt-4">
+              <caption>
+                <strong>Общие ресурсы</strong>
+              </caption>
+              <tr>
+                <th>Name</th>
+                <th>ScopeName</th>
+                <th>Path</th>
+                <th>Description</th>
+              </tr>
+              <tr v-for="smbshare in item.smbshare" :key="smbshare.name">
+                <td>{{ smbshare.Name }}</td>
+                <td>{{ smbshare.ScopeName }}</td>
+                <td>{{ smbshare.Path }}</td>
+                <td>{{ smbshare.Description }}</td>
+              </tr>
+            </table>
+            <table border="1" class="mt-4">
+              <caption>
+                <strong>Программы и компоненты</strong>
+              </caption>
+              <tr>
+                <th>Name</th>
+                <th>ScopeName</th>
+                <th>Path</th>
+                <th>Description</th>
+              </tr>
+              <tr v-for="products in item.products" :key="products.name">
+                <td>{{ products.Name }}</td>
+                <td>{{ products.Vendor }}</td>
+                <td>{{ products.Version }}</td>
+                <td>{{ products.Caption }}</td>
+              </tr>
+            </table>
+          </td>
+        </template>
       </v-data-table>
     </v-card>
 
@@ -276,11 +330,10 @@
 <script>
 export default {
   middleware: ['auth'],
-
   layout: 'apps',
 
   async asyncData({ store }) {
-    const reports = await store.dispatch('rest-api/reports/findAll');
+    const reports = await store.dispatch('rest-api/collector/findAll');
     return { reports };
   },
 
@@ -288,20 +341,34 @@ export default {
     return {
       search: null,
       report: null,
-
-      selectedReport: [],
+      expanded: [],
       headers: [
         {
-          text: 'OS',
-          value: 'os',
-          align: 'center',
+          text: 'Host',
+          value: 'host',
+          align: 'start',
           filterable: false,
           sortable: false
         },
         {
-          text: 'Report',
-          value: 'target',
-          filterable: true,
+          text: 'Users',
+          value: 'users',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'Products',
+          value: 'products',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'SMB Share',
+          value: 'smbshare',
+          align: 'start',
+          filterable: false,
           sortable: false
         },
         {
@@ -310,24 +377,11 @@ export default {
           filterable: false,
           sortable: false
         }
-      ],
-
-      viewReport: false,
-
-      command: null,
-      commandPrefix: null
+      ]
     };
   },
 
   filters: {
-    titleReport: function (value) {
-      if (value) {
-        return `ONMAP Report - ${value.target}`;
-      } else {
-        return 'Online Network Mapper';
-      }
-    },
-
     dateToStr: function (value) {
       return value
         ? new Date(value).toLocaleString('en', {
@@ -348,12 +402,12 @@ export default {
 
   methods: {
     async getReports() {
-      this.reports = await this.$store.dispatch('rest-api/reports/findAll');
+      this.reports = await this.$store.dispatch('rest-api/collector/findAll');
       this.$toast.success('The list of reports has been updated!');
     },
 
     async getReportById(id) {
-      this.report = await this.$store.dispatch('rest-api/reports/findOne', {
+      this.report = await this.$store.dispatch('rest-api/collector/findOne', {
         id
       });
       this.$toast.success(
@@ -362,17 +416,37 @@ export default {
     },
 
     async deleteReport(id) {
-      await this.$store.dispatch('rest-api/reports/removeOne', {
+      await this.$store.dispatch('rest-api/collector/removeOne', {
         id
       });
-      this.report = null;
       this.$toast.success('Report delete!');
       await this.getReports();
     },
 
-    closeReport() {
-      this.report = null;
-    }
+    showReport(id) {},
+    saveReport(id) {},
+    deleteReport(id) {}
   }
 };
 </script>
+
+<style scoped>
+table {
+  width: 100%;
+  border: 0px;
+}
+
+tr {
+  vertical-align: top;
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 8pt;
+}
+
+tr.head {
+  font-weight: bold;
+}
+
+td {
+  padding: 2px;
+}
+</style>

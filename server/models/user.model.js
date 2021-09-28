@@ -28,6 +28,10 @@ const userSchema = new Schema({
       'Please fill a valid email address'
     ]
   },
+  phone: {
+    type: String,
+    default: ''
+  },
   isActive: { type: Boolean, required: true, default: false },
   isAdmin: {
     type: Boolean,
@@ -51,6 +55,7 @@ userSchema.statics.setDefaultAdmin = async function (user, BCRYPT_SALT) {
       password: bcrypt.hashSync(user.password, salt),
       name: user.name,
       email: user.email,
+      phone: '+380000000001',
       isActive: true,
       isAdmin: true,
       role: 'admin'

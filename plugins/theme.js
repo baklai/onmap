@@ -1,4 +1,4 @@
-export default function ({ $vuetify, app }) {
+export default function ({ $vuetify }) {
   if (process.client) {
     const theme = localStorage.getItem('theme.dark') || 'false';
     if (theme) {

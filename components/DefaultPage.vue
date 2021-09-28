@@ -25,7 +25,7 @@
               </v-icon>
             </v-btn>
           </template>
-          <span>{{ item.title }}</span>
+          <span> {{ item.title }} </span>
         </v-tooltip>
       </v-card-text>
       <span class="caption grey--text text--lighten-1">
@@ -37,7 +37,9 @@
 
 <script>
 export default {
-  data: () => ({}),
+  data() {
+    return {};
+  },
   computed: {
     appName() {
       return this.$store.state.app.name;

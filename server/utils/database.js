@@ -18,16 +18,16 @@ const connectToMongoDB = async (MONGO_URI) => {
     console.log('MongoDB connected');
 
     // Development only - delete all collections by start
-    if (process.env.NODE_ENV === 'development') {
-      console.log('MongoDB - delete all collections');
-      const db = mongoose.connection.db;
-      const collections = await db.listCollections().toArray();
-      collections
-        .map((collection) => collection.name)
-        .forEach(async (collectionName) => {
-          await db.dropCollection(collectionName);
-        });
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('MongoDB - delete all collections');
+    //   const db = mongoose.connection.db;
+    //   const collections = await db.listCollections().toArray();
+    //   collections
+    //     .map((collection) => collection.name)
+    //     .forEach(async (collectionName) => {
+    //       await db.dropCollection(collectionName);
+    //     });
+    // }
 
     const user = await User.setDefaultAdmin(
       {
