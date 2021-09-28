@@ -1,21 +1,33 @@
 export const actions = {
-  async getUsers({}) {
+  async getUsers({ commit }) {
     try {
-      return await this.$axios.get('users', {});
-    } catch (e) {
-      throw e;
+      const { data: users } = await this.$axios.get('users', {});
+      return users;
+    } catch (err) {
+      commit('setError', err, { root: true });
+      throw err;
     }
   },
 
-  async createUsers({}, user) {
+  async createUsers({ commit }, user) {
     try {
       console.log(user);
 
       user.password = '12345678';
 
       return await this.$axios.post('users', { ...user });
-    } catch (e) {
-      throw e;
+    } catch (err) {
+      commit('setError', err, { root: true });
+      return false;
+    }
+  },
+
+  async removeUsers({ commit }, user) {
+    try {
+      return await this.$axios.delete(`users/${user.id}`, {});
+    } catch (err) {
+      commit('setError', err, { root: true });
+      throw err;
     }
   }
 

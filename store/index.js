@@ -1,6 +1,8 @@
 import { config } from '@/package.json';
 
 export const state = () => ({
+  error: null,
+
   sidebar: null,
 
   author: {
@@ -121,11 +123,20 @@ export const getters = {
     return `Copyright © ${new Date().getFullYear()} ${
       state.author.name
     }. All rights reserved.`;
-  }
+  },
+
+  error: (state) => state.error
 };
 
 export const mutations = {
   sidebar(state, val) {
     state.sidebar = val;
+  },
+
+  setError(state, error) {
+    state.error = error;
+  },
+  clearError(state) {
+    state.error = null;
   }
 };

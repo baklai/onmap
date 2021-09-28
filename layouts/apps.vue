@@ -18,6 +18,9 @@ export default {
     return {};
   },
   computed: {
+    error() {
+      return this.$store.getters.error;
+    },
     appLinks() {
       return this.$store.state.app.links;
     },
@@ -37,6 +40,11 @@ export default {
             title: this.$store.state.app.short_name,
             subtitle: this.$store.state.app.description
           };
+    }
+  },
+  watch: {
+    error(value) {
+      this.$toast.error(value.response.data.message);
     }
   }
 };

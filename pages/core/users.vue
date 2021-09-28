@@ -224,7 +224,7 @@ export default {
   layout: 'apps',
 
   async asyncData({ store }) {
-    const { data: users } = await store.dispatch('api/getUsers');
+    const users = await store.dispatch('api/getUsers');
     return { users };
   },
 
@@ -289,8 +289,7 @@ export default {
 
   methods: {
     async getUsers() {
-      const { data: users } = await this.$store.dispatch('api/getUsers');
-      this.users = users;
+      this.users = await this.$store.dispatch('api/getUsers');
     },
 
     editItem(item) {
@@ -299,14 +298,20 @@ export default {
       this.dialog = true;
     },
 
-    deleteItem(item) {
+    async deleteItem(item) {
       this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      //   this.editedItem = Object.assign({}, item);
+
+      await this.$store.dispatch('api/removeUsers', {
+        id: this.users[this.editedIndex].id
+      });
+
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
+    async deleteItemConfirm() {
       this.users.splice(this.editedIndex, 1);
+
       this.closeDelete();
     },
 
@@ -330,11 +335,8 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.users[this.editedIndex], this.editedItem);
       } else {
-        const user = await this.$store.dispatch(
-          'api/createUsers',
-          this.editedItem
-        );
-        this.users.push(user);
+        await this.$store.dispatch('api/createUsers', this.editedItem);
+        await this.getUsers();
       }
       this.close();
     }
