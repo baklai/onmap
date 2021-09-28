@@ -1,5 +1,5 @@
 export const actions = {
-  async getUsers() {
+  async getUsers({}) {
     try {
       return await this.$axios.get('users', {});
     } catch (e) {
@@ -7,11 +7,13 @@ export const actions = {
     }
   },
 
-  async createUsers(user) {
+  async createUsers({}, user) {
     try {
       console.log(user);
 
-      return await this.$axios.post('users', { user });
+      user.password = '12345678';
+
+      return await this.$axios.post('users', { ...user });
     } catch (e) {
       throw e;
     }

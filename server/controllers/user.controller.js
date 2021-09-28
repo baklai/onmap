@@ -2,6 +2,12 @@ const bcrypt = require('bcrypt');
 const { toResponse } = require('../models/user.model');
 const userService = require('../services/user.service');
 
+const {
+  JWT_SECRET_KEY,
+  TOKEN_EXPIRES_IN,
+  BCRYPT_SALT
+} = require('../config/api.config');
+
 const findAll = async (req, res, next) => {
   try {
     const users = await userService.findAll();
@@ -28,8 +34,8 @@ const createOne = async (req, res, next) => {
   try {
     console.log(req.body);
 
-    const password = await hash(req.body.password, BCRYPT_SALT);
-    const user = await usersService.createOne({ ...req.body, password });
+    const password = await bcrypt.hash(req.body.password, BCRYPT_SALT);
+    const user = await userService.createOne({ ...req.body, password });
     res.status(200).send(toResponse(user));
   } catch (err) {
     next(err);

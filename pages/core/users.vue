@@ -290,7 +290,7 @@ export default {
   methods: {
     async getUsers() {
       const { data: users } = await this.$store.dispatch('api/getUsers');
-      return { users };
+      this.users = users;
     },
 
     editItem(item) {
@@ -330,16 +330,11 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.users[this.editedIndex], this.editedItem);
       } else {
-        console.log(this.editedItem);
-
         const user = await this.$store.dispatch(
           'api/createUsers',
           this.editedItem
         );
-
-        console.log(user);
-
-        //  this.users.push(this.editedItem);
+        this.users.push(user);
       }
       this.close();
     }
