@@ -2,11 +2,7 @@ const bcrypt = require('bcrypt');
 const { toResponse } = require('../models/user.model');
 const userService = require('../services/user.service');
 
-const {
-  JWT_SECRET_KEY,
-  TOKEN_EXPIRES_IN,
-  BCRYPT_SALT
-} = require('../config/api.config');
+const { BCRYPT_SALT } = require('../config/api.config');
 
 const findAll = async (req, res, next) => {
   try {
@@ -21,7 +17,7 @@ const findOne = async (req, res, next) => {
   try {
     const user = await userService.findOne(req.params.id);
     if (user) {
-      res.status(200).send(toResponse(user));
+      res.status(200).json(toResponse(user));
     } else {
       res.sendStatus(404);
     }
@@ -32,11 +28,9 @@ const findOne = async (req, res, next) => {
 
 const createOne = async (req, res, next) => {
   try {
-    console.log(req.body);
-
     const password = await bcrypt.hash(req.body.password, BCRYPT_SALT);
     const user = await userService.createOne({ ...req.body, password });
-    res.status(200).send(toResponse(user));
+    res.status(200).json(toResponse(user));
   } catch (err) {
     next(err);
   }
@@ -44,7 +38,7 @@ const createOne = async (req, res, next) => {
 
 const updateOne = async (req, res, next) => {
   try {
-    const password = await hash(req.body.password, BCRYPT_SALT);
+    const password = await bcrypt.hash(req.body.password, BCRYPT_SALT);
     const user = {
       ...req.body,
       id: req.params.id,
@@ -52,7 +46,7 @@ const updateOne = async (req, res, next) => {
     };
     const isUpdated = await userService.updateOne(user);
     if (isUpdated) {
-      res.status(200).send(toResponse(user));
+      res.status(200).json(toResponse(user));
     } else {
       res.sendStatus(400);
     }

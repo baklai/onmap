@@ -20,12 +20,13 @@ const signin = async (req, res, next) => {
           const token = jwt.sign(
             {
               id: user._id,
-              login: user.login,
               name: user.name,
               email: user.email,
+              login: user.login,
+              role: user.role,
               isActive: user.isActive,
               isAdmin: user.isAdmin,
-              role: user.role
+              created: user.created
             },
             JWT_SECRET_KEY,
             { expiresIn: TOKEN_EXPIRES_IN }

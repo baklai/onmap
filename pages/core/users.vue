@@ -210,6 +210,16 @@
           <span> {{ item.login }} </span>
         </template>
 
+        <template v-slot:[`item.role`]="{ item }">
+          <v-chip
+            outlined
+            small
+            :color="item.role === 'admin' ? 'success' : 'default'"
+          >
+            {{ item.role }}
+          </v-chip>
+        </template>
+
         <template v-slot:[`item.isActive`]="{ item }">
           <v-switch
             flat
@@ -238,7 +248,7 @@
             small
             class="mr-2"
             color="green lighten-1"
-            @click="editItem(item)"
+            @click="editItem(item.id)"
           >
             <v-icon small> mdi-eye-outline </v-icon>
           </v-btn>
@@ -247,7 +257,7 @@
             small
             class="mr-2"
             color="blue lighten-1"
-            @click="editItem(item)"
+            @click="editItem(item.id)"
           >
             <v-icon small> mdi-pencil </v-icon>
           </v-btn>
@@ -256,7 +266,7 @@
             small
             class="mr-2"
             color="red lighten-1"
-            @click="deleteItem(item)"
+            @click="deleteItem(item.id)"
           >
             <v-icon small> mdi-trash-can-outline </v-icon>
           </v-btn>
@@ -272,7 +282,7 @@ export default {
   layout: 'apps',
 
   async asyncData({ store }) {
-    const users = await store.dispatch('api/getUsers');
+    const users = await store.dispatch('rest-api/users/findAll');
     return { users };
   },
 
@@ -301,7 +311,7 @@ export default {
         { text: 'Admin', value: 'isAdmin', sortable: false },
         { text: '', value: 'actions', align: 'center', sortable: false }
       ],
-      editedIndex: -1,
+      editedIndex: null,
       editedItem: {
         name: '',
         email: '',
@@ -341,9 +351,7 @@ export default {
 
   computed: {
     modalFormTitle() {
-      return this.editedIndex === -1
-        ? 'Create new account'
-        : 'Edit current account';
+      return this.editedIndex ? 'Edit current account' : 'Create new account';
     }
   },
 
@@ -358,31 +366,30 @@ export default {
 
   methods: {
     async getUsers() {
-      this.users = await this.$store.dispatch('api/getUsers');
+      this.users = await this.$store.dispatch('rest-api/users/findAll');
       this.$toast.success('Users list is updated!');
     },
 
-    editItem(item) {
-      this.editedIndex = this.users.indexOf(item);
+    async editItem(id) {
+      this.editedIndex = id;
+      const item = await this.$store.dispatch('rest-api/users/findOne', { id });
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
-    async deleteItem(item) {
-      this.editedIndex = this.users.indexOf(item);
-      //   this.editedItem = Object.assign({}, item);
-
-      await this.$store.dispatch('api/removeUsers', {
-        id: this.users[this.editedIndex].id
-      });
-
+    async deleteItem(id) {
+      this.editedIndex = id;
       this.dialogDelete = true;
     },
 
     async deleteItemConfirm() {
-      this.users.splice(this.editedIndex, 1);
-
+      await this.$store.dispatch('rest-api/users/removeOne', {
+        id: this.editedIndex
+      });
+      this.$toast.success('User is removed!');
+      this.editedIndex = null;
       this.closeDelete();
+      await this.getUsers();
     },
 
     close() {
@@ -390,7 +397,7 @@ export default {
       this.$refs.dialogForm.reset();
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+        this.editedIndex = null;
       });
     },
 
@@ -398,25 +405,29 @@ export default {
       this.dialogDelete = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+        this.editedIndex = null;
       });
     },
 
     async save() {
-      if (this.editedIndex > -1) {
-        //  Object.assign(this.users[this.editedIndex], this.editedItem);
-        if (this.$refs.dialogForm.validate()) {
-          await this.$store.dispatch('api/updateUsers', this.editedItem);
-          await this.getUsers();
+      if (this.$refs.dialogForm.validate()) {
+        if (this.editedIndex) {
+          await this.$store.dispatch('rest-api/users/updateOne', {
+            id: this.editedIndex,
+            user: this.editedItem
+          });
+          this.$toast.success('User is updated!');
+        } else {
+          await this.$store.dispatch(
+            'rest-api/users/createOne',
+            this.editedItem
+          );
+          this.$toast.success('User is created!');
         }
-      } else {
-        if (this.$refs.dialogForm.validate()) {
-          await this.$store.dispatch('api/createUsers', this.editedItem);
-          await this.getUsers();
-        }
+        this.close();
+        this.$refs.dialogForm.reset();
+        await this.getUsers();
       }
-      // this.$refs.dialogForm.reset();
-      //  this.close();
     }
   }
 };

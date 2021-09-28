@@ -1,5 +1,14 @@
 export const actions = {
-  async getUsers({ commit }) {
+  async findOne({ commit }, { id }) {
+    try {
+      return await this.$axios.$get(`users/${id}`, {});
+    } catch (err) {
+      commit('setError', err, { root: true });
+      return false;
+    }
+  },
+
+  async findAll({ commit }) {
     try {
       return await this.$axios.$get('users', {});
     } catch (err) {
@@ -8,7 +17,7 @@ export const actions = {
     }
   },
 
-  async createUsers({ commit }, user) {
+  async createOne({ commit }, user) {
     try {
       return await this.$axios.$post('users', { ...user });
     } catch (err) {
@@ -17,18 +26,18 @@ export const actions = {
     }
   },
 
-  async updateUsers({ commit }, user) {
+  async updateOne({ commit }, { id, user }) {
     try {
-      return await this.$axios.$put(`users/${user.id}`, { ...user });
+      return await this.$axios.$put(`users/${id}`, { ...user });
     } catch (err) {
       commit('setError', err, { root: true });
       return false;
     }
   },
 
-  async removeUsers({ commit }, user) {
+  async removeOne({ commit }, { id }) {
     try {
-      return await this.$axios.delete(`users/${user.id}`, {});
+      return await this.$axios.delete(`users/${id}`, {});
     } catch (err) {
       commit('setError', err, { root: true });
       return false;
