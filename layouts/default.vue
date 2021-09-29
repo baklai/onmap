@@ -1,5 +1,5 @@
 <template>
-  <v-app v-if="$nuxt.$loading">
+  <v-app>
     <NavDrawerMini />
     <v-app-bar app flat color="transparent">
       <v-spacer />

@@ -28,12 +28,10 @@ process.env.HOST =
 
 process.env.PORT = process.env.NODE_ENV === 'production' ? '8080' : '3000';
 
-console.log(process.env);
-
 export default {
   telemetry: false,
 
-  ssr: false,
+  ssr: process.env.NODE_ENV === 'production' ? true : false,
 
   cli: {
     badgeMessages: [
