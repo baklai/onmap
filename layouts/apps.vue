@@ -1,5 +1,6 @@
 <template>
-  <v-app v-if="$nuxt.$loading">
+  <!-- v-if="$nuxt.$loading" -->
+  <v-app>
     <NavDrawerApp
       :links="appLinks"
       :subheader="'Application'"

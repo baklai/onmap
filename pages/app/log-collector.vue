@@ -5,7 +5,6 @@
         item-key="id"
         show-expand
         single-expand
-        :expanded.sync="expanded"
         :headers="headers"
         :items="reports"
         :search="search"
@@ -20,7 +19,9 @@
         loading-text="Loading... Please wait"
         no-data-text="No data available"
         class="elevation-1"
+        @item-expanded="loadDetails"
       >
+        >
         <template v-slot:top>
           <v-toolbar flat>
             <v-icon large left> mdi-skull-scan-outline </v-icon>
@@ -62,24 +63,24 @@
         <template v-slot:[`item.host`]="{ item }">
           <v-icon left> mdi-ip-network-outline </v-icon>
           <span>
-            <strong> {{ item.host }} </strong>
+            {{ item.host }}
           </span>
         </template>
 
         <template v-slot:[`item.users`]="{ item }">
-          <v-chip outlined small color="success">
+          <v-chip outlined small color="dafault">
             {{ item.users.length }}
           </v-chip>
         </template>
 
         <template v-slot:[`item.products`]="{ item }">
-          <v-chip outlined small color="success">
+          <v-chip outlined small color="dafault">
             {{ item.products.length }}
           </v-chip>
         </template>
 
         <template v-slot:[`item.smbshare`]="{ item }">
-          <v-chip outlined small color="success">
+          <v-chip outlined small color="dafault">
             {{ item.smbshare.length }}
           </v-chip>
         </template>
@@ -96,19 +97,10 @@
             icon
             small
             class="mr-2"
-            color="green lighten-1"
-            @click="showReport(item.id)"
-          >
-            <v-icon small> mdi-eye-outline </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            small
-            class="mr-2"
             color="blue lighten-1"
             @click="saveReport(item.id)"
           >
-            <v-icon small> mdi-content-save-outline </v-icon>
+            <v-icon> mdi-content-save-outline </v-icon>
           </v-btn>
           <v-btn
             icon
@@ -117,7 +109,20 @@
             color="red lighten-1"
             @click="deleteReport(item.id)"
           >
-            <v-icon small> mdi-trash-can-outline </v-icon>
+            <v-icon> mdi-trash-can-outline </v-icon>
+          </v-btn>
+        </template>
+
+        <template v-slot:[`item.data-table-expand`]="{ expand, isExpanded }">
+          <v-btn
+            icon
+            small
+            @click="expand(!isExpanded)"
+            :color="isExpanded ? 'blue lighten-1' : 'green lighten-1'"
+          >
+            <v-icon>
+              {{ isExpanded ? 'mdi-file-eye' : 'mdi-file-eye-outline' }}
+            </v-icon>
           </v-btn>
         </template>
 
@@ -341,6 +346,9 @@ export default {
 
   async asyncData({ store }) {
     const reports = await store.dispatch('rest-api/collector/findAll');
+
+    console.log(reports);
+
     return { reports };
   },
 
@@ -351,8 +359,57 @@ export default {
       expanded: [],
       headers: [
         {
-          text: 'Host',
+          text: 'Computer name',
+          value: 'dd',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'IP-Address',
           value: 'host',
+          align: 'start',
+          filterable: true,
+          sortable: false
+        },
+        {
+          text: 'Teg',
+          value: 'dd',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'Last connection',
+          value: 'updated',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'OS name',
+          value: 'dd',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'OS platform',
+          value: 'dd',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'Warnings',
+          value: 'dd',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'OS version',
+          value: 'dd',
           align: 'start',
           filterable: false,
           sortable: false
@@ -378,13 +435,7 @@ export default {
           filterable: false,
           sortable: false
         },
-        {
-          text: 'Date time',
-          value: 'updated',
-          align: 'start',
-          filterable: false,
-          sortable: false
-        },
+        { text: '', value: 'data-table-expand' },
         {
           text: '',
           value: 'actions',
@@ -397,24 +448,19 @@ export default {
 
   filters: {
     dateToStr: function (value) {
-      return value
-        ? new Date(value).toLocaleString('en', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-          })
-        : '';
+      return value ? new Date(value).toLocaleString() : '-';
     },
 
     jsonToStr: function (value) {
-      return value ? JSON.stringify(value, null, '\t') : '';
+      return value ? JSON.stringify(value, null, '\t') : '-';
     }
   },
 
   methods: {
+    loadDetails({ item }) {
+      console.log(item);
+    },
+
     async getReports() {
       this.reports = await this.$store.dispatch('rest-api/collector/findAll');
       this.$toast.success('The list of reports has been updated!');
@@ -437,7 +483,6 @@ export default {
       await this.getReports();
     },
 
-    showReport(id) {},
     saveReport(id) {},
     deleteReport(id) {}
   }

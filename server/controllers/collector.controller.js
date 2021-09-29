@@ -3,7 +3,7 @@ const collectorService = require('../services/collector.service');
 const findAll = async (req, res, next) => {
   try {
     const reports = await collectorService.findAll();
-    res.status(200).json(reports);
+    res.status(200).json(reports.map(toResponse));
   } catch (err) {
     next(err);
   }

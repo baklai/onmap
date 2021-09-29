@@ -69,7 +69,7 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
-  loading: '@/components/LoadingBar.vue',
+  loading: false, // '@/components/LoadingBar.vue',
 
   css: ['@mdi/font/css/materialdesignicons.min.css', '~/assets/variables.css'],
 

@@ -21,4 +21,39 @@ const collectorSchema = new Schema({
   }
 });
 
+// add virtual if You want
+collectorSchema.virtual('usersCount').get(function () {
+  return this.users.length;
+});
+
+collectorSchema.virtual('productsCount').get(function () {
+  return this.products.length;
+});
+
+collectorSchema.virtual('smbshareCount').get(function () {
+  return this.smbshare.length;
+});
+
+collectorSchema.statics.toResponse = function (collector) {
+  const {
+    id,
+    host,
+    usersCount,
+    productsCount,
+    smbshareCount,
+    created,
+    updated
+  } = collector;
+
+  return {
+    id,
+    host,
+    usersCount,
+    productsCount,
+    smbshareCount,
+    created,
+    updated
+  };
+};
+
 module.exports = model('collector', collectorSchema);
