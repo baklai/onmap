@@ -145,11 +145,11 @@
                 <th>Path</th>
                 <th>Description</th>
               </tr>
-              <tr v-for="smbshare in report.smbshares" :key="smbshare.name">
-                <td>{{ smbshare.Name }}</td>
-                <td>{{ smbshare.ScopeName }}</td>
-                <td>{{ smbshare.Path }}</td>
-                <td>{{ smbshare.Description }}</td>
+              <tr v-for="share in report.shares" :key="share.name">
+                <td>{{ share.Name }}</td>
+                <td>{{ share.ScopeName }}</td>
+                <td>{{ share.Path }}</td>
+                <td>{{ share.Description }}</td>
               </tr>
             </table>
             <table border="1" class="mt-4">
@@ -162,11 +162,11 @@
                 <th>Path</th>
                 <th>Description</th>
               </tr>
-              <tr v-for="products in report.products" :key="products.name">
-                <td>{{ products.Name }}</td>
-                <td>{{ products.Vendor }}</td>
-                <td>{{ products.Version }}</td>
-                <td>{{ products.Caption }}</td>
+              <tr v-for="product in report.products" :key="product.name">
+                <td>{{ product.Name }}</td>
+                <td>{{ product.Vendor }}</td>
+                <td>{{ product.Version }}</td>
+                <td>{{ product.Caption }}</td>
               </tr>
             </table>
           </td>
@@ -265,7 +265,7 @@ export default {
         },
         {
           text: 'SMB Share',
-          value: 'smbsharesCount',
+          value: 'sharesCount',
           align: 'start',
           filterable: false,
           sortable: true

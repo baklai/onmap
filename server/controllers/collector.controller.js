@@ -30,7 +30,7 @@ const createOne = async (req, res, next) => {
       os: JSON.parse(req.body.os),
       users: JSON.parse(req.body.users),
       products: JSON.parse(req.body.products),
-      smbshare: JSON.parse(req.body.smbshares)
+      shares: JSON.parse(req.body.shares)
     });
     res.status(200).json(report);
   } catch (err) {
