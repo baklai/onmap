@@ -7,17 +7,21 @@ const collectorSchema = new Schema({
     required: true,
     trim: true
   },
+  os: {
+    type: Object,
+    default: null
+  },
   users: {
     type: Array,
-    default: null
+    default: []
   },
   products: {
     type: Array,
-    default: null
+    default: []
   },
-  smbshare: {
+  smbshares: {
     type: Array,
-    default: null
+    default: []
   }
 });
 
@@ -30,17 +34,18 @@ collectorSchema.virtual('productsCount').get(function () {
   return this.products.length;
 });
 
-collectorSchema.virtual('smbshareCount').get(function () {
-  return this.smbshare.length;
+collectorSchema.virtual('smbsharesCount').get(function () {
+  return this.smbshares.length;
 });
 
 collectorSchema.statics.toResponse = function (collector) {
   const {
     id,
     host,
+    os,
     usersCount,
     productsCount,
-    smbshareCount,
+    smbsharesCount,
     created,
     updated
   } = collector;
@@ -48,9 +53,10 @@ collectorSchema.statics.toResponse = function (collector) {
   return {
     id,
     host,
+    os,
     usersCount,
     productsCount,
-    smbshareCount,
+    smbsharesCount,
     created,
     updated
   };

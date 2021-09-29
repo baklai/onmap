@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card>
       <v-data-table
         item-key="id"
@@ -19,7 +19,7 @@
         loading-text="Loading... Please wait"
         no-data-text="No data available"
         class="elevation-1"
-        @item-expanded="loadDetails"
+        @item-expanded="getReportById"
       >
         >
         <template v-slot:top>
@@ -38,7 +38,7 @@
                 solo-inverted
                 v-model="search"
                 prepend-inner-icon="mdi-magnify"
-                label="Search in reports"
+                label="Search IP-Address"
                 class="ma-0"
               />
             </v-responsive>
@@ -60,60 +60,29 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:[`item.host`]="{ item }">
-          <v-icon left> mdi-ip-network-outline </v-icon>
-          <span>
-            {{ item.host }}
-          </span>
-        </template>
-
-        <template v-slot:[`item.users`]="{ item }">
+        <template v-slot:[`item.usersCount`]="{ item }">
           <v-chip outlined small color="dafault">
-            {{ item.users.length }}
+            {{ item.usersCount }}
           </v-chip>
         </template>
 
-        <template v-slot:[`item.products`]="{ item }">
+        <template v-slot:[`item.productsCount`]="{ item }">
           <v-chip outlined small color="dafault">
-            {{ item.products.length }}
+            {{ item.productsCount }}
           </v-chip>
         </template>
 
-        <template v-slot:[`item.smbshare`]="{ item }">
+        <template v-slot:[`item.smbsharesCount`]="{ item }">
           <v-chip outlined small color="dafault">
-            {{ item.smbshare.length }}
+            {{ item.smbsharesCount }}
           </v-chip>
         </template>
 
         <template v-slot:[`item.updated`]="{ item }">
-          <v-icon left> mdi-clock-outline </v-icon>
-          <span>
-            {{ item.updated | dateToStr }}
-          </span>
+          {{ item.updated | dateToStr }}
         </template>
 
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-btn
-            icon
-            small
-            class="mr-2"
-            color="blue lighten-1"
-            @click="saveReport(item.id)"
-          >
-            <v-icon> mdi-content-save-outline </v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            small
-            class="mr-2"
-            color="red lighten-1"
-            @click="deleteReport(item.id)"
-          >
-            <v-icon> mdi-trash-can-outline </v-icon>
-          </v-btn>
-        </template>
-
-        <template v-slot:[`item.data-table-expand`]="{ expand, isExpanded }">
+        <!-- <template v-slot:[`item.data-table-expand`]="{ expand, isExpanded }">
           <v-btn
             icon
             small
@@ -124,11 +93,31 @@
               {{ isExpanded ? 'mdi-file-eye' : 'mdi-file-eye-outline' }}
             </v-icon>
           </v-btn>
+        </template> -->
+
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn
+            icon
+            small
+            class="mr-2"
+            color="blue lighten-1"
+            @click="saveReport(item.id)"
+          >
+            <v-icon small> mdi-content-save-outline </v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            small
+            class="mr-2"
+            color="red lighten-1"
+            @click="deleteReport(item.id)"
+          >
+            <v-icon small> mdi-trash-can-outline </v-icon>
+          </v-btn>
         </template>
 
-        <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length" style="max-height: 50px">
-            <p>HOST IP - {{ item.host }}</p>
+        <template v-slot:expanded-item="{ headers }">
+          <td :colspan="headers.length" style="max-height: 50px" v-if="report">
             <table border="1" class="mt-4">
               <caption>
                 <strong>Локальные пользователи</strong>
@@ -139,7 +128,7 @@
                 <th>SID</th>
                 <th>Enabled</th>
               </tr>
-              <tr v-for="user in item.users" :key="user.name">
+              <tr v-for="user in report.users" :key="user.name">
                 <td>{{ user.Name }}</td>
                 <td>{{ user.Description }}</td>
                 <td>{{ user.SID.Value }}</td>
@@ -156,7 +145,7 @@
                 <th>Path</th>
                 <th>Description</th>
               </tr>
-              <tr v-for="smbshare in item.smbshare" :key="smbshare.name">
+              <tr v-for="smbshare in report.smbshares" :key="smbshare.name">
                 <td>{{ smbshare.Name }}</td>
                 <td>{{ smbshare.ScopeName }}</td>
                 <td>{{ smbshare.Path }}</td>
@@ -173,7 +162,7 @@
                 <th>Path</th>
                 <th>Description</th>
               </tr>
-              <tr v-for="products in item.products" :key="products.name">
+              <tr v-for="products in report.products" :key="products.name">
                 <td>{{ products.Name }}</td>
                 <td>{{ products.Vendor }}</td>
                 <td>{{ products.Version }}</td>
@@ -184,158 +173,6 @@
         </template>
       </v-data-table>
     </v-card>
-
-    <!-- <v-card>
-      <v-app-bar flat>
-        <v-toolbar-title>ONMAP Reports</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar flat dense color="transparent">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-console </v-icon>
-              </v-btn>
-            </template>
-            <span> Rescan targets </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-content-save-all-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Save reports </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs" @click="selectedReport = []">
-                <v-icon> mdi-close-box-multiple-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Cancel selected </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-trash-can-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Delete reports </span>
-          </v-tooltip>
-        </v-toolbar>
-      </v-app-bar>
-
-      <v-card-title>
-        ONMAP Reports
-        <v-toolbar flat dense color="transparent">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-console </v-icon>
-              </v-btn>
-            </template>
-            <span> Rescan targets </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-content-save-all-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Save reports </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs" @click="selectedReport = []">
-                <v-icon> mdi-close-box-multiple-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Cancel selected </span>
-          </v-tooltip>
-
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-on="on" v-bind="attrs">
-                <v-icon> mdi-trash-can-outline </v-icon>
-              </v-btn>
-            </template>
-            <span> Delete reports </span>
-          </v-tooltip>
-        </v-toolbar>
-        <v-spacer></v-spacer>
-
-      </v-card-title>
-      <v-data-table
-        dense
-        show-select
-        v-model="selectedReport"
-        item-key="_id"
-        :headers="headers"
-        :items="reports"
-        :search="search"
-        :items-per-page="5"
-        :footer-props="{
-          itemsPerPageOptions: [5, 10, 25, 50, -1],
-          itemsPerPageText: 'Rows per reports:',
-
-          showFirstLastPage: true,
-          showCurrentPage: true
-        }"
-        loading-text="Loading... Please wait"
-        no-data-text="No data available"
-      >
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-list-item class="pr-0">
-            <v-btn
-              icon
-              small
-              color="green lighten-1"
-              @click="getReportById(item._id)"
-            >
-              <v-icon small>mdi-eye-outline</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              small
-              color="blue lighten-1"
-              @click="saveReport(item._id)"
-            >
-              <v-icon small>mdi-content-save-outline</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              small
-              color="red lighten-1"
-              @click="deleteReport(item._id)"
-            >
-              <v-icon small>mdi-trash-can-outline</v-icon>
-            </v-btn>
-          </v-list-item>
-        </template>
-
-        <template v-slot:[`item.os`]="{}">
-          <v-icon>mdi-desktop-classic</v-icon>
-        </template>
-
-        <template v-slot:[`item.target`]="{ item }">
-          <v-list-item dense class="pl-0 pr-0">
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ item.target }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                <small> {{ item.updatedAt | dateToStr }} </small>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-data-table>
-    </v-card> -->
   </v-container>
 </template>
 
@@ -346,9 +183,6 @@ export default {
 
   async asyncData({ store }) {
     const reports = await store.dispatch('rest-api/collector/findAll');
-
-    console.log(reports);
-
     return { reports };
   },
 
@@ -358,9 +192,10 @@ export default {
       report: null,
       expanded: [],
       headers: [
+        { text: '', value: 'data-table-expand' },
         {
           text: 'Computer name',
-          value: 'dd',
+          value: 'os.CsName',
           align: 'start',
           filterable: false,
           sortable: false
@@ -370,11 +205,11 @@ export default {
           value: 'host',
           align: 'start',
           filterable: true,
-          sortable: false
+          sortable: true
         },
         {
           text: 'Teg',
-          value: 'dd',
+          value: '',
           align: 'start',
           filterable: false,
           sortable: false
@@ -384,58 +219,58 @@ export default {
           value: 'updated',
           align: 'start',
           filterable: false,
-          sortable: false
+          sortable: true
         },
         {
           text: 'OS name',
-          value: 'dd',
+          value: 'os.OsName',
           align: 'start',
           filterable: false,
-          sortable: false
+          sortable: true
         },
         {
           text: 'OS platform',
-          value: 'dd',
-          align: 'start',
-          filterable: false,
-          sortable: false
-        },
-        {
-          text: 'Warnings',
-          value: 'dd',
+          value: 'os.OsArchitecture',
           align: 'start',
           filterable: false,
           sortable: false
         },
         {
           text: 'OS version',
-          value: 'dd',
+          value: 'os.OsVersion',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'Warnings',
+          value: '',
           align: 'start',
           filterable: false,
           sortable: false
         },
         {
           text: 'Users',
-          value: 'users',
+          value: 'usersCount',
           align: 'start',
           filterable: false,
-          sortable: false
+          sortable: true
         },
         {
           text: 'Products',
-          value: 'products',
+          value: 'productsCount',
           align: 'start',
           filterable: false,
-          sortable: false
+          sortable: true
         },
         {
           text: 'SMB Share',
-          value: 'smbshare',
+          value: 'smbsharesCount',
           align: 'start',
           filterable: false,
-          sortable: false
+          sortable: true
         },
-        { text: '', value: 'data-table-expand' },
+
         {
           text: '',
           value: 'actions',
@@ -457,23 +292,20 @@ export default {
   },
 
   methods: {
-    loadDetails({ item }) {
-      console.log(item);
-    },
-
     async getReports() {
       this.reports = await this.$store.dispatch('rest-api/collector/findAll');
       this.$toast.success('The list of reports has been updated!');
     },
 
-    async getReportById(id) {
+    async getReportById({ item }) {
+      this.report = null;
       this.report = await this.$store.dispatch('rest-api/collector/findOne', {
-        id
+        id: item.id
       });
-      this.$toast.success(
-        `Report ${this.report.target} received successfully!`
-      );
+      this.$toast.success(`Report ${this.report.host} received successfully!`);
     },
+
+    saveReport(id) {},
 
     async deleteReport(id) {
       await this.$store.dispatch('rest-api/collector/removeOne', {
@@ -481,10 +313,7 @@ export default {
       });
       this.$toast.success('Report delete!');
       await this.getReports();
-    },
-
-    saveReport(id) {},
-    deleteReport(id) {}
+    }
   }
 };
 </script>
@@ -499,10 +328,6 @@ tr {
   vertical-align: top;
   font-family: Verdana, Helvetica, sans-serif;
   font-size: 8pt;
-}
-
-tr.head {
-  font-weight: bold;
 }
 
 td {

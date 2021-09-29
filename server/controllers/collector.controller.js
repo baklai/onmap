@@ -1,4 +1,5 @@
 const collectorService = require('../services/collector.service');
+const { toResponse } = require('../models/collector.model');
 
 const findAll = async (req, res, next) => {
   try {
@@ -26,9 +27,10 @@ const createOne = async (req, res, next) => {
   try {
     const report = await collectorService.createOne({
       host: req.body.host,
+      os: JSON.parse(req.body.os),
       users: JSON.parse(req.body.users),
       products: JSON.parse(req.body.products),
-      smbshare: JSON.parse(req.body.smbshare)
+      smbshare: JSON.parse(req.body.smbshares)
     });
     res.status(200).json(report);
   } catch (err) {
