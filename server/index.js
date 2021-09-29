@@ -1,7 +1,7 @@
 const compression = require('compression');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 const jwt = require('express-jwt');
 
 const { MONGO_URI, JWT_SECRET_KEY } = require('./config/api.config');
@@ -21,7 +21,11 @@ const { isActive } = require('./middleware/roles');
 
 const app = express();
 
-app.use(logger('dev'));
+app.use(
+  morgan(
+    ':remote-addr :method :url :status :res[content-length] - :response-time ms'
+  )
+);
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
