@@ -72,9 +72,9 @@
           </v-chip>
         </template>
 
-        <template v-slot:[`item.smbsharesCount`]="{ item }">
+        <template v-slot:[`item.sharesCount`]="{ item }">
           <v-chip outlined small color="dafault">
-            {{ item.smbsharesCount }}
+            {{ item.sharesCount }}
           </v-chip>
         </template>
 
