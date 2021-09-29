@@ -84,6 +84,13 @@
           </v-chip>
         </template>
 
+        <template v-slot:[`item.updated`]="{ item }">
+          <v-icon left> mdi-clock-outline </v-icon>
+          <span>
+            {{ item.updated | dateToStr }}
+          </span>
+        </template>
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn
             icon
@@ -367,6 +374,13 @@ export default {
         {
           text: 'SMB Share',
           value: 'smbshare',
+          align: 'start',
+          filterable: false,
+          sortable: false
+        },
+        {
+          text: 'Date time',
+          value: 'updated',
           align: 'start',
           filterable: false,
           sortable: false
