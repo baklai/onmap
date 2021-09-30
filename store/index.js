@@ -96,12 +96,6 @@ export const state = () => ({
 
     links: [
       {
-        href: '/app/log-collector',
-        icon: 'mdi-skull-scan-outline',
-        title: 'Log Collector',
-        subtitle: 'Service for log collector.'
-      },
-      {
         href: '/app/scaner',
         icon: 'mdi-lan',
         title: 'Scan service',

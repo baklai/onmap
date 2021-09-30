@@ -15,8 +15,6 @@ const userRoutes = require('./routes/user.router');
 const profileRoutes = require('./routes/profile.router');
 const reportRoutes = require('./routes/report.router');
 
-const collectorRoutes = require('./routes/collector.router');
-
 const { isActive } = require('./middleware/roles');
 
 const app = express();
@@ -36,11 +34,7 @@ app.use(
     secret: JWT_SECRET_KEY,
     algorithms: ['sha1', 'RS256', 'HS256']
   }).unless({
-    path: [
-      '/api/v1/auth/signin',
-      '/api/v1/auth/signup',
-      { url: '/api/v1/collector', methods: ['POST'] }
-    ]
+    path: ['/api/v1/auth/signin', '/api/v1/auth/signup']
   })
 );
 
@@ -48,8 +42,6 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/profiles', profileRoutes);
 app.use('/reports', reportRoutes);
-
-app.use('/collector', collectorRoutes);
 
 app.use((req, res, next) => {
   res
