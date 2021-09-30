@@ -60,6 +60,10 @@
           </v-toolbar>
         </template>
 
+        <template v-slot:[`item.os.CsName`]="{ item }">
+          {{ item.os.CsName.toLowerCase() }}
+        </template>
+
         <template v-slot:[`item.usersCount`]="{ item }">
           <v-chip outlined small color="dafault">
             {{ item.usersCount }}
@@ -319,6 +323,10 @@ export default {
 </script>
 
 <style scoped>
+.v-data-table.v-data-table.v-data-table >>> td {
+  font-size: 0.7rem !important;
+}
+
 table {
   width: 100%;
   border: 0px;
